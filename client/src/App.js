@@ -24,7 +24,9 @@ function App() {
   };
 
   const deleteItem = async (e) => {
-    console.log(e.target);
+    await axios.delete(
+      `http://localhost:3000/${e.target.parentElement.firstChild.innerHTML}`
+    );
   };
 
   return (

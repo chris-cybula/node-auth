@@ -1,11 +1,9 @@
-import './index.css';
+import "./index.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App.js";
 
 var destination = document.querySelector("#container");
 
-ReactDOM.render(
-    <h1>react</h1>,
-    destination
-);
+ReactDOM.render(<App />, destination);

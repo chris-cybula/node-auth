@@ -1,11 +1,12 @@
 import React from "react"
 import App from "../components/App.js"
-import { Link } from "gatsby"
+import Layout from "../components/Layout.js"
 
 const Home = () => (
   <>
-    <Link to={"/page"}>Page</Link>
-    <App />
+    <Layout link={"Page"} location="/page" title={"Index"}>
+      <App />
+    </Layout>
   </>
 )
 

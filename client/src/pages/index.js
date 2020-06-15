@@ -1,6 +1,12 @@
 import React from "react"
 import App from "../components/App.js"
+import { Link } from "gatsby"
 
-export default function Home() {
-  return <App />
-}
+const Home = () => (
+  <>
+    <Link to={"/page"}>Page</Link>
+    <App />
+  </>
+)
+
+export default Home

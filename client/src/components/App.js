@@ -3,7 +3,7 @@ import axios from "axios"
 
 import { useState, useEffect } from "react"
 
-function App() {
+const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
 

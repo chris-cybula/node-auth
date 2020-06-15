@@ -1,23 +1,36 @@
 import React from "react"
 import Layout from "../components/Layout.js"
 import { useState, useEffect } from "react"
+import axios from "axios"
 
 const Page = () => {
+  const [login, setLogin] = useState()
+  const [repos, setRepos] = useState([])
+
   useEffect(() => {
     getData()
   }, [])
 
-  const getData = () => {
-    //   const res = await axios.get("http://localhost:3000")
-    //   const list = res.data.map(a => a.description)
-    //   setListItem(list)
+  const getData = async () => {
+    const login = await axios.get("https://api.github.com/users/chris-cybula")
+    const repos = await axios.get(
+      "https://api.github.com/users/chris-cybula/repos"
+    )
 
-    console.log("Chris")
+    setLogin(login.data.login)
+    setRepos(repos.data)
   }
 
   return (
     <Layout link={"Index"} location={"/"} title={"Page"}>
-      <h1>Page</h1>
+      <h1>{login}</h1>
+      {repos.map((repo, i) => {
+        return (
+          <div key={i}>
+            <li>{repo.name}</li>
+          </div>
+        )
+      })}
     </Layout>
   )
 }

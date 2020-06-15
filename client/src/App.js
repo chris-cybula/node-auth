@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     getData();
-  });
+  }, []);
 
   const getData = async () => {
     const res = await axios.get("http://localhost:3000");
@@ -21,12 +21,15 @@ function App() {
     await axios.post("http://localhost:3000", {
       description: item,
     });
+
+    setListItem([...listItems, item]);
   };
 
   const deleteItem = async (e) => {
-    await axios.delete(
-      `http://localhost:3000/${e.target.parentElement.firstChild.innerHTML}`
-    );
+    const removedItem = e.target.parentElement.firstChild.innerHTML;
+    await axios.delete(`http://localhost:3000/${removedItem}`);
+
+    setListItem(listItems.filter((e) => e !== removedItem));
   };
 
   return (

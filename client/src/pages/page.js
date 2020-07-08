@@ -2,7 +2,7 @@ import React from "react"
 import Layout from "../components/Layout.js"
 import { useState, useEffect } from "react"
 import axios from "axios"
-import { graphql } from "gatsby"
+// import { graphql } from "gatsby"
 
 const Page = () => {
   const [login, setLogin] = useState()
@@ -10,7 +10,7 @@ const Page = () => {
 
   useEffect(() => {
     getData()
-    getDataGraphQL()
+    // getDataGraphQL()
   }, [])
 
   const getData = async () => {
@@ -23,9 +23,9 @@ const Page = () => {
     setRepos(repos.data)
   }
 
-  const getDataGraphQL = async () => {
-    console.log("Chris")
-  }
+  // const getDataGraphQL = async () => {
+  //   console.log("Chris")
+  // }
 
   return (
     <Layout link={"Index"} location={"/"} title={"Page"}>

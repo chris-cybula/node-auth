@@ -9,12 +9,14 @@ const app = express();
 //routes
 const authRoute = require("./routes/auth");
 const listRoute = require("./routes/list");
+const dataRoute = require('./routes/data')
 
 //middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/", listRoute);
 app.use("/api/user", authRoute);
+app.use('/api/data', dataRoute)
 
 // connect to db
 mongoose.connect(process.env.DB_CONNECTION, {

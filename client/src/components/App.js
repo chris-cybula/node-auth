@@ -40,7 +40,7 @@ const App = () => {
 
       {listItems.map((item, i) => {
         return (
-          <div key={i} className="itemWrapper">
+          <div key={i}>
             <li>{item}</li>
             <button onClick={deleteItem}>Delete</button>
           </div>

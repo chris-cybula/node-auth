@@ -11,22 +11,45 @@ const Login = () => {
       password: "",
     }
   )
-
-  // const handleRegister = async () => {
-  //   console.log(JSON.stringify(registerData))
-
-  //   await axios.post('http://localhost:3000/api/user/register', data: registerData)
-  // }
+  const [loginData, setLoginData] = useState(
+    { 
+      email: "",
+      password: "",
+    }
+  )
 
   const handleRegister = async () => {
-  await axios({
-    method: 'post',
-    url: 'http://localhost:3000/api/user/register',
-    data: registerData
-  })
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/user/register',
+        data: registerData
+      })
 
-  alert('Register')
+      alert('Registered!')
+    
+    } catch (error) {
+      alert(JSON.stringify(error.response.data))
+    }
 }
+
+const handleLogin = async () => {
+  try {
+    await axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/user/login',
+      data: loginData
+    })
+
+    alert('Logged in!')
+  
+  } catch (error) {
+    alert(JSON.stringify(error.response.data))
+  }
+
+  console.log(loginData)
+}
+
 
   return (
     <>
@@ -40,11 +63,12 @@ const Login = () => {
     </div>
     <div>
        <p>Login</p>
-        <input placeholder="username or email address"/>
-        <input placeholder="password"/>
-        <button>Login</button> 
+        <input placeholder="email" onChange={e => setLoginData({...loginData, email: e.target.value})}/>
+        <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
+        <button onClick={handleLogin}>Login</button> 
         <Link to="/">Forgot password?</Link>
     </div>
+    <p>user1@sed.com password1</p>
     </>
   )
 }

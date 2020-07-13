@@ -3,7 +3,7 @@ import App from "../components/App.js"
 import Layout from "../components/Layout.js"
 import { navigate } from "gatsby"
 
-const isLoggedIn = false;
+const isLoggedIn = false; 
 
 const Home = () => {
 

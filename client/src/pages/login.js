@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import { useState } from "react"
 import axios from "axios"
 
@@ -34,22 +34,16 @@ const Login = () => {
 }
 
 const handleLogin = async () => {
-  try {
-    await axios({
-      method: 'post',
-      url: 'http://localhost:3000/api/user/login',
-      data: loginData
-    })
+  axios.post('http://localhost:3000/api/user/login', loginData)
+  .then((response) => {
+
+    console.log(response.headers["auth-token"]);
 
     alert('Logged in!')
-  
-  } catch (error) {
+  }, (error) => {
     alert(JSON.stringify(error.response.data))
-  }
-
-  console.log(loginData)
+  });
 }
-
 
   return (
     <>
@@ -68,7 +62,7 @@ const handleLogin = async () => {
         <button onClick={handleLogin}>Login</button> 
         <Link to="/">Forgot password?</Link>
     </div>
-    <p>user1@sed.com password1</p>
+    <p>usernameChris@mail.com || passwordChris</p>
     </>
   )
 }

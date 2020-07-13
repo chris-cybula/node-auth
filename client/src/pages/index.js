@@ -2,10 +2,32 @@ import React from "react"
 import App from "../components/App.js"
 import Layout from "../components/Layout.js"
 import { navigate } from "gatsby"
+import { createStore } from "redux"
+import allReducers from '../reducers'
 
-const isLoggedIn = false; 
+//action
+const getToken = () => {
+  return {
+    type: 'GET_TOKEN'
+  }
+}
 
-const Home = () => {
+
+//store
+let store = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+//console
+store.subscribe(() => console.log(store.getState()))
+
+//dispatch
+store.dispatch(getToken())
+
+
+const Index = () => {
+  const isLoggedIn = true; 
 
   const userAuth = () => {
     if (!isLoggedIn && window.location.pathname !== "/login") {
@@ -22,10 +44,10 @@ const Home = () => {
 
   return (
     <>
-        {userAuth()}
+      {userAuth()}
     </>
   )
 }
 
-export default Home
+export default Index
 

@@ -4,14 +4,8 @@ import Layout from "../components/Layout.js"
 import { navigate } from "gatsby"
 import { createStore } from "redux"
 import allReducers from '../reducers'
-
-//action
-const getToken = () => {
-  return {
-    type: 'GET_TOKEN'
-  }
-}
-
+import { getToken } from "../actions/getToken";
+import { Provider } from "react-redux";
 
 //store
 let store = createStore(
@@ -37,7 +31,9 @@ const Index = () => {
 
     return (
       <Layout link={"Page"} location="/page" title={"Index"}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </Layout>
     )
   }

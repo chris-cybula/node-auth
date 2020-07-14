@@ -1,11 +1,15 @@
 import React from "react"
 import axios from "axios"
-
 import { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux";
+import { getToken } from "../actions/getToken";
+
 
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
+  const loginReducer = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getData()
@@ -46,6 +50,11 @@ const App = () => {
           </div>
         )
       })}
+      <div>
+        <h1>Redux</h1>
+        <p>{loginReducer ? 'true' : 'false'}</p>
+        <button onClick={() => dispatch(getToken())}>change</button>
+      </div>
     </div>
   )
 }

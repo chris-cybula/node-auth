@@ -3,13 +3,24 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
 import { getToken } from "../actions/getToken";
-
+import { navigate } from "gatsby"
 
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
   const loginReducer = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
+
+  const isLoggedIn = false; 
+
+  const userAuth = () => {
+    if (!isLoggedIn && window.location.pathname !== "/login") {
+      navigate("/login")
+      return
+    }
+  }
+
+  userAuth()
 
   useEffect(() => {
     getData()

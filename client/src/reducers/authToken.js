@@ -1,4 +1,4 @@
-const loginReducer = (state = false, action) => {
+const authToken = (state = false, action) => {
     switch(action.type) {
       case 'GET_TOKEN':
         // return response.headers["auth-token"]
@@ -8,4 +8,4 @@ const loginReducer = (state = false, action) => {
     }
   }
 
-  export default loginReducer
+  export default authToken

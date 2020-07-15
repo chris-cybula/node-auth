@@ -8,10 +8,10 @@ import { navigate } from "gatsby"
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
-  const loginReducer = useSelector((state) => state.loginReducer);
+  const authToken = useSelector((state) => state.authToken);
   const dispatch = useDispatch();
 
-  const isLoggedIn = false; 
+  const isLoggedIn = true; 
 
   const userAuth = () => {
     if (!isLoggedIn && window.location.pathname !== "/login") {
@@ -63,7 +63,7 @@ const App = () => {
       })}
       <div>
         <h1>Redux</h1>
-        <p>{loginReducer ? 'true' : 'false'}</p>
+        <p>{authToken ? 'true' : 'false'}</p>
         <button onClick={() => dispatch(getToken())}>change</button>
       </div>
     </div>

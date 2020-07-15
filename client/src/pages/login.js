@@ -3,7 +3,9 @@ import { Link, navigate } from "gatsby"
 import { useState } from "react"
 import axios from "axios"
 
+
 const Login = () => {
+  // const dispatch = useDispatch();
   const [registerData, setRegisterData] = useState(
     { 
       name: "",
@@ -38,6 +40,8 @@ const handleLogin = async () => {
   .then((response) => {
 
     console.log(response.headers["auth-token"]);
+    // dispatch(getToken())
+
 
     alert('Logged in!')
   }, (error) => {

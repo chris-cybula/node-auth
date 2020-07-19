@@ -52,6 +52,8 @@ const handleLogin = async () => {
 
     dispatch(getToken(response.headers["auth-token"]))
 
+    console.log(response.data)
+
     alert('Logged in!')
   }, (error) => {
     alert(JSON.stringify(error.response.data))

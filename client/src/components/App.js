@@ -17,9 +17,9 @@ const App = () => {
       return
     }
   }
-  userAuth()
-
+  
   useEffect(() => {
+    userAuth()
     getData()
   }, [])
 
@@ -45,20 +45,30 @@ const App = () => {
     setListItem(listItems.filter(e => e !== removedItem))
   }
 
-  return (
-    <Layout link={"Page"} location="/page" title={"Index"}>
-      <input onChange={event => setItem(event.target.value)} />
-      <button onClick={addItem}>Add</button>
+  const renderApp = () => {
+    if(authToken !== null) {
+      return (
+        <Layout link={"Page"} location="/page" title={"Index"}>
+          <p>token: {authToken.token}</p>
+          <input onChange={event => setItem(event.target.value)} />
+          <button onClick={addItem}>Add</button>
+    
+          {listItems.map((item, i) => {
+            return (
+              <div key={i}>
+                <li>{item}</li>
+                <button onClick={deleteItem}>Delete</button>
+              </div>
+            )
+          })}
+        </Layout>
+    )} 
+  }
 
-      {listItems.map((item, i) => {
-        return (
-          <div key={i}>
-            <li>{item}</li>
-            <button onClick={deleteItem}>Delete</button>
-          </div>
-        )
-      })}
-    </Layout>
+  return (
+    <>
+      {renderApp()}
+    </>
   )
 }
 

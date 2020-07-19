@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
   res.header('auth-token', token);
   res.header("Access-Control-Expose-Headers", "auth-token");
   
-  res.send('Logged in!')
+  res.send(user)
 });
 
 module.exports = router;

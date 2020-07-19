@@ -1,15 +1,15 @@
 import React from "react"
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
+import Layout from "../components/Layout.js"
+
 
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
   const authToken = useSelector((state) => state.authToken);
-
-  const isLoggedIn = false;
 
   const userAuth = () => {
     if (authToken === null && window.location.pathname !== "/login") {
@@ -46,7 +46,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Layout link={"Page"} location="/page" title={"Index"}>
       <input onChange={event => setItem(event.target.value)} />
       <button onClick={addItem}>Add</button>
 
@@ -58,7 +58,7 @@ const App = () => {
           </div>
         )
       })}
-    </div>
+    </Layout>
   )
 }
 

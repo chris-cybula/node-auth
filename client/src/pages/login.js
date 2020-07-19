@@ -1,11 +1,22 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
-
+import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "../actions/getToken"
 
 const Login = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const authToken = useSelector((state) => state.authToken);
+
+  const userAuth = () => {
+    if (authToken !== null && window.location.pathname === "/login") {
+      navigate("/")
+      return
+    }
+  }
+  userAuth()
+
   const [registerData, setRegisterData] = useState(
     { 
       name: "",
@@ -39,9 +50,7 @@ const handleLogin = async () => {
   axios.post('http://localhost:3000/api/user/login', loginData)
   .then((response) => {
 
-    console.log(response.headers["auth-token"]);
-    // dispatch(getToken())
-
+    dispatch(getToken(response.headers["auth-token"]))
 
     alert('Logged in!')
   }, (error) => {

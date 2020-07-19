@@ -2,24 +2,21 @@ import React from "react"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
-import { getToken } from "../actions/getToken";
 import { navigate } from "gatsby"
 
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
   const authToken = useSelector((state) => state.authToken);
-  const dispatch = useDispatch();
 
-  const isLoggedIn = true; 
+  const isLoggedIn = false;
 
   const userAuth = () => {
-    if (!isLoggedIn && window.location.pathname !== "/login") {
+    if (authToken === null && window.location.pathname !== "/login") {
       navigate("/login")
       return
     }
   }
-
   userAuth()
 
   useEffect(() => {
@@ -61,11 +58,6 @@ const App = () => {
           </div>
         )
       })}
-      <div>
-        <h1>Redux</h1>
-        <p>{authToken ? 'true' : 'false'}</p>
-        <button onClick={() => dispatch(getToken())}>change</button>
-      </div>
     </div>
   )
 }

@@ -1,10 +1,9 @@
-const authToken = (state = false, action) => {
+const authToken = (state = null, action) => {
     switch(action.type) {
       case 'GET_TOKEN':
-        // return response.headers["auth-token"]
-        return !state
+        return {...state, token: action.payload};
       default:
-        return state;
+        return state
     }
   }
 

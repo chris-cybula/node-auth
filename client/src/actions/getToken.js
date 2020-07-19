@@ -1,5 +1,6 @@
-export const getToken = () => {
+export const getToken = (token) => {
     return {
-      type: 'GET_TOKEN'
+      type: 'GET_TOKEN',
+      payload: token,
     }
   }

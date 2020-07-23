@@ -11,6 +11,11 @@ const App = () => {
   const [listItems, setListItem] = useState([])
   const authToken = useSelector((state) => state.authToken);
 
+  useEffect(() => {
+    userAuth()
+    getData()
+  }, [])
+
   const userAuth = () => {
     if (authToken === null && window.location.pathname !== "/login") {
       navigate("/login")
@@ -18,12 +23,20 @@ const App = () => {
     }
   }
   
-  useEffect(() => {
-    userAuth()
-    getData()
-  }, [])
-
   const getData = async () => {
+
+    if(authToken) {
+      const userData = await axios.get("http://localhost:3000/api/data/", {
+        headers: {
+          'auth-token': authToken.token
+        }
+    });
+
+      console.log(userData.data._id)
+      console.log(authToken.token)
+
+    }
+
     const res = await axios.get("http://localhost:3000")
     const list = res.data.map(a => a.description)
 
@@ -40,6 +53,7 @@ const App = () => {
 
   const deleteItem = async e => {
     const removedItem = e.target.parentElement.firstChild.innerHTML
+    
     await axios.delete(`http://localhost:3000/${removedItem}`)
 
     setListItem(listItems.filter(e => e !== removedItem))

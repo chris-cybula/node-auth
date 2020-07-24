@@ -9,6 +9,7 @@ import Layout from "../components/Layout.js"
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
+  const [userData, setUserData] = useState([])
   const authToken = useSelector((state) => state.authToken);
 
   useEffect(() => {
@@ -26,44 +27,50 @@ const App = () => {
   const getData = async () => {
 
     if(authToken) {
-      const userData = await axios.get("http://localhost:3000/api/data/", {
+      const userData = await axios.get("http://localhost:3000", {
         headers: {
           'auth-token': authToken.token
         }
-    });
+      });
 
-      console.log(userData.data._id)
-      console.log(authToken.token)
-
+      setListItem(userData.data[0].data)
+      setUserData(userData)
+      console.log('userdata', userData)
     }
-
-    const res = await axios.get("http://localhost:3000")
-    const list = res.data.map(a => a.description)
-
-    setListItem(list)
   }
 
   const addItem = async () => {
-    await axios.post("http://localhost:3000", {
-      description: item,
-    })
 
-    setListItem([...listItems, item])
+    if(authToken) {
+      await axios.post("http://localhost:3000", { item: item }, {
+        headers: {
+          'auth-token': authToken.token
+        }
+      });
+      
+      setListItem([...listItems, item])
+    }
   }
 
   const deleteItem = async e => {
+    
     const removedItem = e.target.parentElement.firstChild.innerHTML
     
-    await axios.delete(`http://localhost:3000/${removedItem}`)
+    if(authToken) {
+    await axios.delete(`http://localhost:3000/${removedItem}`, {
+        headers: {
+          'auth-token': authToken.token
+        }
+      });
 
-    setListItem(listItems.filter(e => e !== removedItem))
+      setListItem(listItems.filter(e => e !== removedItem))
+    }
   }
 
   const renderApp = () => {
     if(authToken !== null) {
       return (
         <Layout link={"Page"} location="/page" title={"Index"}>
-          <p>token: {authToken.token}</p>
           <input onChange={event => setItem(event.target.value)} />
           <button onClick={addItem}>Add</button>
     

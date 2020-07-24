@@ -1,28 +1,39 @@
 const express = require("express");
 const router = express.Router();
+const verify = require('../utils/verifyToken')
 
 //import schema
 const Item = require("../models/Item");
+const User = require("../models/User");
 
 //get data
-router.get("/", async (req, res) => {
+router.get("/", verify, async (req, res) => {
+
   try {
-    const items = await Item.find();
-    res.json(items);
+    const data = await User.find( { _id: req.user });
+    res.json(data);
   } catch (err) {
     res.json(err);
   }
 });
 
 //post data
-router.post("/", async (req, res) => {
-  const item = new Item({
-    description: req.body.description,
-  });
+router.post("/", verify, async (req, res) => {
 
   try {
-    const savedItem = await item.save();
-    res.json(savedItem);
+    User.findByIdAndUpdate(req.user, { $push: { data: req.body.item } }).exec();
+    res.json('ok');
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+//delete
+router.delete("/:description", verify, async (req, res) => {
+  
+  try {
+    User.findByIdAndUpdate(req.user, { $pull: { data: req.params.description } }).exec();
+    res.json('ok');
   } catch (err) {
     res.json(err);
   }
@@ -38,17 +49,6 @@ router.get("/:description", async (req, res) => {
   }
 });
 
-//delete
-router.delete("/:description", async (req, res) => {
-  try {
-    const removedItem = await Item.remove({
-      description: req.params.description,
-    });
-    res.json(removedItem);
-  } catch (err) {
-    res.json(err);
-  }
-});
 
 //update
 router.patch("/:description", async (req, res) => {

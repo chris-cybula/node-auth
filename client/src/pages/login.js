@@ -75,7 +75,7 @@ const handleLogin = async () => {
         <button onClick={handleLogin}>Login</button> 
         <Link to="/">Forgot password?</Link>
     </div>
-    <p>usernameChris@mail.com || passwordChris</p>
+    <p>usernameChris1@mail.com || passwordChris1</p>
     </>
   )
 }

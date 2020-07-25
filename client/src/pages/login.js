@@ -58,6 +58,10 @@ const handleLogin = async () => {
   });
 }
 
+const handleMail = async () => {
+  alert('Email sent')
+}
+
   return (
     <>
     <h1>Login</h1>
@@ -77,7 +81,7 @@ const handleLogin = async () => {
     <div>
        <p>Reset password</p>
         <input placeholder="email"/>
-        <button>Send password reset email</button> 
+        <button onClick={handleMail}>Send password reset email</button> 
     </div>
     <p>usernameChris1@mail.com || passwordChris1</p>
     </>

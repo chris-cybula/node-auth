@@ -73,7 +73,11 @@ const handleLogin = async () => {
         <input placeholder="email" onChange={e => setLoginData({...loginData, email: e.target.value})}/>
         <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
         <button onClick={handleLogin}>Login</button> 
-        <Link to="/">Forgot password?</Link>
+    </div>
+    <div>
+       <p>Reset password</p>
+        <input placeholder="email"/>
+        <button>Send password reset email</button> 
     </div>
     <p>usernameChris1@mail.com || passwordChris1</p>
     </>

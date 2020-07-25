@@ -59,6 +59,9 @@ const handleLogin = async () => {
 }
 
 const handleMail = async () => {
+  const userData = await axios.get("http://localhost:3000/api/data");
+  console.log
+
   alert('Email sent')
 }
 

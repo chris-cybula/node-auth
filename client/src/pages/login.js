@@ -9,14 +9,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.authToken);
 
-  const userAuth = () => {
-    if (authToken !== null && window.location.pathname === "/login") {
-      navigate("/")
-      return
-    }
-  }
-  userAuth()
-
   const [registerData, setRegisterData] = useState(
     { 
       name: "",
@@ -30,6 +22,20 @@ const Login = () => {
       password: "",
     }
   )
+
+  const [resetEmail, setResetEmail] = useState(
+    { 
+      email: "",
+    }
+  )
+
+  const userAuth = () => {
+    if (authToken !== null && window.location.pathname === "/login") {
+      navigate("/")
+      return
+    }
+  }
+  userAuth()
 
   const handleRegister = async () => {
     try {
@@ -58,11 +64,29 @@ const handleLogin = async () => {
   });
 }
 
-const handleMail = async () => {
-  const userData = await axios.get("http://localhost:3000/api/data");
-  console.log
+// const handleMail = async () => {
+//   await axios.get("http://localhost:3000/api/mail", resetEmail);
+//   console.log(resetEmail)
 
-  alert('Email sent')
+//   alert('Email sent')
+// }
+
+const handleMail = async () => {
+  try {
+    await axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/mail',
+      data: resetEmail
+    })
+
+    alert('Email sent')
+    console.log(resetEmail)
+  
+  } catch (error) {
+    alert(JSON.stringify(error.response.data))
+
+    alert('Wrong email')
+  }
 }
 
   return (
@@ -83,7 +107,7 @@ const handleMail = async () => {
     </div>
     <div>
        <p>Reset password</p>
-        <input placeholder="email"/>
+        <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
         <button onClick={handleMail}>Send password reset email</button> 
     </div>
     <p>usernameChris1@mail.com || passwordChris1</p>

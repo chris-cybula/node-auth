@@ -1,9 +1,14 @@
 const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const log = console.log;
+const User = require("../models/User");
 
-router.get('/', (req, res) => {
-    res.send(req.user);
+router.post('/', async (req, res) => {
+
+    console.log(req.body.email)
+
+    // const user = await User.findOne({ email: req.body });
+    // if (!user) return res.status(400).send("Email doesn't exist");
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -28,6 +33,9 @@ router.get('/', (req, res) => {
         }
         return log('Email sent!!!');
     });
+
+    res.send('ok')
+
 });
 
 module.exports = router;

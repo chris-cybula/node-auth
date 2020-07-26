@@ -16,7 +16,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/", listRoute);
 app.use("/api/user", authRoute);
-app.use('/api/data', mailRoute)
+app.use('/api/mail', mailRoute)
 
 // connect to db
 mongoose.connect(process.env.DB_CONNECTION, {

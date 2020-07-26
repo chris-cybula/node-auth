@@ -6,10 +6,6 @@ const verify = require('../utils/verifyToken')
 const Item = require("../models/Item");
 const User = require("../models/User");
 
-const nodemailer = require('nodemailer');
-const log = console.log;
-
-
 //get data
 router.get("/", verify, async (req, res) => {
 
@@ -19,30 +15,6 @@ router.get("/", verify, async (req, res) => {
   } catch (err) {
     res.json(err);
   }
-
-     let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user:  'chris.cybula.test@gmail.com',
-            pass:  'Delasoul31test'
-        }
-    });
-
-    // Step 2
-    let mailOptions = {
-        from: 'chris.cybula.test@gmail.com',
-        to: 'chris.cybula.test2@gmail.com',
-        subject: 'Nodemailer - Test',
-        text: 'Wooohooo it works3!!'
-    };
-
-    // Step 3
-    transporter.sendMail(mailOptions, (err, data) => {
-        if (err) {
-            return log('Error occurs!', err);
-        }
-        return log('Email sent!!!');
-    });
 });
 
 //post data

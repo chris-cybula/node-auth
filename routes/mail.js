@@ -7,8 +7,8 @@ router.post('/', async (req, res) => {
 
     console.log(req.body.email)
 
-    // const user = await User.findOne({ email: req.body });
-    // if (!user) return res.status(400).send("Email doesn't exist");
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send("Email doesn't exist");
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',

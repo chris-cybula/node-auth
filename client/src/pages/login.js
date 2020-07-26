@@ -84,8 +84,6 @@ const handleMail = async () => {
   
   } catch (error) {
     alert(JSON.stringify(error.response.data))
-
-    alert('Wrong email')
   }
 }
 

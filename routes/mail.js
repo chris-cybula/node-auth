@@ -13,8 +13,6 @@ router.post('/', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Email doesn't exist");
 
-    console.log(user)
-
     var newPassword = generator.generate({
         length: 10,
         numbers: true
@@ -43,7 +41,6 @@ router.post('/', async (req, res) => {
         }
     });
 
-    // Step 2
     let mailOptions = {
         from: 'chris.cybula.test@gmail.com',
         to: 'chris.cybula.test2@gmail.com',
@@ -51,7 +48,6 @@ router.post('/', async (req, res) => {
         text: newPassword
     };
 
-    // Step 3
     transporter.sendMail(mailOptions, (err, data) => {
         if (err) {
             return log('Error occurs!', err);
@@ -60,7 +56,6 @@ router.post('/', async (req, res) => {
     });
 
     res.send('ok')
-
 });
 
 module.exports = router;

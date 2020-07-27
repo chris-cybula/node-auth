@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Email doesn't exist");
 
-    console.log(user.password)
+    console.log(user)
 
     var newPassword = generator.generate({
         length: 10,
@@ -25,7 +25,8 @@ router.post('/', async (req, res) => {
     if(user) {
         try {
             const updatedItem = await User.updateOne(
-              { $set: { password: hashedPassword } }
+                { email: user.email },
+                { $set: { password: hashedPassword } }
             );
             res.json(updatedItem);
           } catch (err) {

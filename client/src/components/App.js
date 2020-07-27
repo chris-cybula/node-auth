@@ -34,8 +34,7 @@ const App = () => {
       });
 
       setListItem(userData.data[0].data)
-      setUserData(userData)
-      console.log('userdata', userData)
+      setUserData(userData.data[0])
     }
   }
 
@@ -71,6 +70,31 @@ const App = () => {
     if(authToken !== null) {
       return (
         <Layout link={"Page"} location="/page" title={"Index"}>
+
+          <h1>Login</h1>
+          <div>
+            <p>Change username - {userData.name}</p>
+              <input placeholder="New username"/>
+              <button>Change username</button> 
+          </div>
+          <div>
+            <p>Change email - {userData.email}</p>
+              <input placeholder="Old email"/>
+              <input placeholder="New email"/>
+              <input placeholder="Confirm new email"/>
+              <button>Change email</button> 
+          </div>
+          <div>
+            <p>Change password - {userData.password}</p>
+              <input placeholder="Old password"/>
+              <input placeholder="New password"/>
+              <input placeholder="Confirm new password"/>
+              <button>Change password</button> 
+          </div>
+          <p>Logout</p>
+          <button>Logout</button> 
+
+          <h1>App</h1>
           <input onChange={event => setItem(event.target.value)} />
           <button onClick={addItem}>Add</button>
     

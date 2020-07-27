@@ -108,7 +108,7 @@ const handleMail = async () => {
         <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
         <button onClick={handleMail}>Send password reset email</button> 
     </div>
-    <p>usernameChris1@mail.com || passwordChris1</p>
+    <p>usernameChris1@mail.com || 1Z2EqZEg53</p>
     </>
   )
 }

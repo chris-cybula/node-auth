@@ -4,6 +4,7 @@ const log = console.log;
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 var generator = require('generate-password');
+require("dotenv/config");
 
 router.post('/', async (req, res) => {
 
@@ -37,8 +38,8 @@ router.post('/', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user:  'chris.cybula.test@gmail.com',
-            pass:  'Delasoul31test'
+            user:  process.env.MAIL,
+            pass:  process.env.PASSWORD,
         }
     });
 

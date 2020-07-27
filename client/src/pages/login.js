@@ -18,7 +18,7 @@ const Login = () => {
   )
   const [loginData, setLoginData] = useState(
     { 
-      email: "",
+      nameOrEmail: "",
       password: "",
     }
   )
@@ -99,7 +99,7 @@ const handleMail = async () => {
     </div>
     <div>
        <p>Login</p>
-        <input placeholder="email" onChange={e => setLoginData({...loginData, email: e.target.value})}/>
+        <input placeholder="username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
         <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
         <button onClick={handleLogin}>Login</button> 
     </div>

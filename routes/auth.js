@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
   if (!user) return res.status(400).send("Email doesn't exist");
 
   const validPass = await bcrypt.compare(req.body.password, user.password);

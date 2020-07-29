@@ -10,6 +10,7 @@ const app = express();
 const authRoute = require("./routes/auth");
 const listRoute = require("./routes/list");
 const mailRoute = require('./routes/mail')
+const settingsRoute = require('./routes/settings')
 
 //middlewares
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use("/", listRoute);
 app.use("/api/user", authRoute);
 app.use('/api/mail', mailRoute)
+app.use('/api/settings', settingsRoute)
 
 // connect to db
 mongoose.connect(process.env.DB_CONNECTION, {

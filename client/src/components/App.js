@@ -4,13 +4,14 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Layout from "../components/Layout.js"
-
+import Settings from "../components/Settings.js"
 
 const App = () => {
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
   const [userData, setUserData] = useState([])
   const authToken = useSelector((state) => state.authToken);
+  const [newName, setNewName] = useState()
 
   useEffect(() => {
     userAuth()
@@ -29,7 +30,8 @@ const App = () => {
     if(authToken) {
       const userData = await axios.get("http://localhost:3000", {
         headers: {
-          'auth-token': authToken.token
+          // 'auth-token': authToken.token
+          'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'
         }
       });
 
@@ -71,28 +73,7 @@ const App = () => {
       return (
         <Layout link={"Page"} location="/page" title={"Index"}>
 
-          <h1>Login</h1>
-          <div>
-            <p>Change username - {userData.name}</p>
-              <input placeholder="New username"/>
-              <button>Change username</button> 
-          </div>
-          <div>
-            <p>Change email - {userData.email}</p>
-              <input placeholder="Old email"/>
-              <input placeholder="New email"/>
-              <input placeholder="Confirm new email"/>
-              <button>Change email</button> 
-          </div>
-          <div>
-            <p>Change password - {userData.password}</p>
-              <input placeholder="Old password"/>
-              <input placeholder="New password"/>
-              <input placeholder="Confirm new password"/>
-              <button>Change password</button> 
-          </div>
-          <p>Logout</p>
-          <button>Logout</button> 
+          <Settings userData={userData}/>
 
           <h1>App</h1>
           <input onChange={event => setItem(event.target.value)} />

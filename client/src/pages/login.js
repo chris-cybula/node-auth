@@ -80,7 +80,6 @@ const handleMail = async () => {
     })
 
     alert('Email sent')
-    console.log(resetEmail)
   
   } catch (error) {
     alert(JSON.stringify(error.response.data))

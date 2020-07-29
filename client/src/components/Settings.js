@@ -5,11 +5,9 @@ import { useState, useEffect } from "react"
 const Settings = ({userData}) => {
   const [settingsData, setSettingsData] = useState(
     {   
-        id: userData._id,
         newName: "",
     }
   )
-
 
   const changeName = async e => {
 
@@ -17,7 +15,7 @@ const Settings = ({userData}) => {
         await axios({
           method: 'post',
           url: 'http://localhost:3000/api/settings',
-          data: settingsData,
+          data: [userData._id, settingsData],
           headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
         })
     

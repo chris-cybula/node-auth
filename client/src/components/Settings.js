@@ -3,12 +3,31 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 
 const Settings = ({userData}) => {
-  const [newName, setNewName] = useState()
+  const [settingsData, setSettingsData] = useState(
+    {   
+        id: userData._id,
+        newName: "",
+    }
+  )
 
 
   const changeName = async e => {
+
+    try {
+        await axios({
+          method: 'post',
+          url: 'http://localhost:3000/api/settings',
+          data: settingsData,
+          headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
+        })
     
-    console.log(newName)
+        alert('Name changed')
+      
+      } catch (error) {
+        alert(JSON.stringify(error.response.data))
+      }
+
+      console.log(settingsData)
   }
 
   return (
@@ -16,7 +35,7 @@ const Settings = ({userData}) => {
       <h1>User settings</h1>
           <div>
             <p>Change username - {userData.name}</p>
-              <input placeholder="New username" onChange={event => setNewName(event.target.value)}/>
+              <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
               <button onClick={changeName}>Change username</button> 
           </div>
           <div>

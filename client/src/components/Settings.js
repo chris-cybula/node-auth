@@ -13,6 +13,9 @@ const Settings = ({userData, updateData}) => {
         oldEmail: "",
         newEmail: "",
         confirmedEmail: "",
+        oldPassword: "",
+        newPassword: "",
+        confirmedPassword: ""
     }
   )
 
@@ -23,7 +26,7 @@ const Settings = ({userData, updateData}) => {
           method: 'post',
           url: 'http://localhost:3000/api/settings/name',
           data: [userData._id, settingsData],
-          headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
+          headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjIyZTAwNDRkM2M4ZmU1NTc1YzE5OTYiLCJpYXQiOjE1OTYxMjEzMjN9.wEQF3I4CCuE_hFUEr1ooJgmj-3PiIxO7YIEhdOBaDgI'}
             // headers: { 'auth-token': authToken.token }
         })
     
@@ -56,6 +59,26 @@ const Settings = ({userData, updateData}) => {
       }
   }
 
+  const changePassword = async () => {
+
+    try {
+        await axios({
+          method: 'post',
+          url: 'http://localhost:3000/api/settings/password',
+          data: [userData._id, settingsData],
+        //   headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
+            headers: { 'auth-token': authToken.token }
+        })
+    
+        alert('Pass changed')
+
+        updateData('password', settingsData.newPassword)
+      
+      } catch (error) {
+        alert(JSON.stringify(error.response.data))
+      }
+  }
+
   return (
     <>
       <h1>User settings</h1>
@@ -73,10 +96,10 @@ const Settings = ({userData, updateData}) => {
           </div>
           <div>
             <p>Change password - {userData.password}</p>
-              <input placeholder="Old password"/>
-              <input placeholder="New password"/>
-              <input placeholder="Confirm new password"/>
-              <button>Change password</button> 
+              <input placeholder="Old password" onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
+              <input placeholder="New password" onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
+              <input placeholder="Confirm new password" onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
+              <button onClick={changePassword}>Change password</button> 
           </div>
           <p>Logout</p>
           <button>Logout</button> 

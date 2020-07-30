@@ -36,11 +36,22 @@ const changeEmailValidation = (data) => {
   return schema.validate(data);
 };
 
+const changePasswordValidation = (data) => {
+  const schema = Joi.object({
+    newPassword: Joi.string().min(6).required(),
+    confirmedPassword: Joi.string().required(),
+  });
+
+  return schema.validate(data);
+};
+
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 
 module.exports.changeNameValidation = changeNameValidation;
 module.exports.changeEmailValidation = changeEmailValidation;
+module.exports.changePasswordValidation = changePasswordValidation;
+
 
 

@@ -10,10 +10,13 @@ const Settings = ({userData, updateData}) => {
   const [settingsData, setSettingsData] = useState(
     {   
         newName: "",
+        oldEmail: "",
+        newEmail: "",
+        confirmedEmail: "",
     }
   )
 
-  const changeName = async e => {
+  const changeName = async () => {
 
     try {
         await axios({
@@ -31,8 +34,26 @@ const Settings = ({userData, updateData}) => {
       } catch (error) {
         alert(JSON.stringify(error.response.data))
       }
+  }
 
-      console.log(settingsData)
+  const changeEmail = async () => {
+
+    try {
+        await axios({
+          method: 'post',
+          url: 'http://localhost:3000/api/settings/email',
+          data: [userData._id, settingsData],
+          headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
+            // headers: { 'auth-token': authToken.token }
+        })
+    
+        alert('Email changed')
+
+        updateData('email', settingsData.newEmail)
+      
+      } catch (error) {
+        alert(JSON.stringify(error.response.data))
+      }
   }
 
   return (
@@ -45,10 +66,10 @@ const Settings = ({userData, updateData}) => {
           </div>
           <div>
             <p>Change email - {userData.email}</p>
-              <input placeholder="Old email"/>
-              <input placeholder="New email"/>
-              <input placeholder="Confirm new email"/>
-              <button>Change email</button> 
+              <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
+              <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
+              <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
+              <button onClick={changeEmail}>Change email</button> 
           </div>
           <div>
             <p>Change password - {userData.password}</p>

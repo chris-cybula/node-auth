@@ -11,7 +11,6 @@ const App = () => {
   const [listItems, setListItem] = useState([])
   const [userData, setUserData] = useState([])
   const authToken = useSelector((state) => state.authToken);
-  const [newName, setNewName] = useState()
 
   useEffect(() => {
     userAuth()
@@ -37,6 +36,8 @@ const App = () => {
 
       setListItem(userData.data[0].data)
       setUserData(userData.data[0])
+      console.log(userData.data[0])
+
     }
   }
 
@@ -68,12 +69,18 @@ const App = () => {
     }
   }
 
+  const updateData = (updatedItem, item) => {
+    
+    setUserData({...userData, [updatedItem]: item})
+    
+  }
+
   const renderApp = () => {
     if(authToken !== null) {
       return (
         <Layout link={"Page"} location="/page" title={"Index"}>
 
-          <Settings userData={userData}/>
+          <Settings userData={userData} updateData={updateData}/>
 
           <h1>App</h1>
           <input onChange={event => setItem(event.target.value)} />

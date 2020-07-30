@@ -1,8 +1,12 @@
 import React from "react"
 import axios from "axios"
 import { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
 
-const Settings = ({userData}) => {
+
+const Settings = ({userData, updateData}) => {
+  const authToken = useSelector((state) => state.authToken);
+
   const [settingsData, setSettingsData] = useState(
     {   
         newName: "",
@@ -14,12 +18,15 @@ const Settings = ({userData}) => {
     try {
         await axios({
           method: 'post',
-          url: 'http://localhost:3000/api/settings',
+          url: 'http://localhost:3000/api/settings/name',
           data: [userData._id, settingsData],
           headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
+            // headers: { 'auth-token': authToken.token }
         })
     
         alert('Name changed')
+
+        updateData('name', settingsData.newName)
       
       } catch (error) {
         alert(JSON.stringify(error.response.data))

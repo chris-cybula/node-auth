@@ -5,6 +5,9 @@ const { changeNameValidation, changeEmailValidation, changePasswordValidation } 
 const bcrypt = require("bcryptjs");
 
 router.post('/name', verify, async (req, res) => {
+    const nameExist = await User.findOne({ name: req.body[1].newName });
+    if (nameExist) return res.status(400).send("Name already exists");
+  
     const { error } = changeNameValidation({name: req.body[1].newName});
     if (error) return res.status(400).send(error.details[0].message);
 

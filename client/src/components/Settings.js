@@ -2,9 +2,11 @@ import React from "react"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-
+import { getToken } from "../actions/getToken"
+import { Link, navigate } from "gatsby"
 
 const Settings = ({userData, updateData}) => {
+  const dispatch = useDispatch();
   const authToken = useSelector((state) => state.authToken);
 
   const [settingsData, setSettingsData] = useState(
@@ -26,8 +28,8 @@ const Settings = ({userData, updateData}) => {
           method: 'post',
           url: 'http://localhost:3000/api/settings/name',
           data: [userData._id, settingsData],
-          headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjIyZTAwNDRkM2M4ZmU1NTc1YzE5OTYiLCJpYXQiOjE1OTYxMjEzMjN9.wEQF3I4CCuE_hFUEr1ooJgmj-3PiIxO7YIEhdOBaDgI'}
-            // headers: { 'auth-token': authToken.token }
+        //   headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjIyZTAwNDRkM2M4ZmU1NTc1YzE5OTYiLCJpYXQiOjE1OTYxMjEzMjN9.wEQF3I4CCuE_hFUEr1ooJgmj-3PiIxO7YIEhdOBaDgI'}
+            headers: { 'auth-token': authToken.token }
         })
     
         alert('Name changed')
@@ -46,8 +48,8 @@ const Settings = ({userData, updateData}) => {
           method: 'post',
           url: 'http://localhost:3000/api/settings/email',
           data: [userData._id, settingsData],
-          headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
-            // headers: { 'auth-token': authToken.token }
+        //   headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
+            headers: { 'auth-token': authToken.token }
         })
     
         alert('Email changed')
@@ -79,6 +81,13 @@ const Settings = ({userData, updateData}) => {
       }
   }
 
+  const logout = () => {
+
+    dispatch(getToken(null))
+    navigate("/login")
+    alert('logout')
+  }
+
   return (
     <>
       <h1>User settings</h1>
@@ -102,7 +111,7 @@ const Settings = ({userData, updateData}) => {
               <button onClick={changePassword}>Change password</button> 
           </div>
           <p>Logout</p>
-          <button>Logout</button> 
+          <button onClick={logout}>Logout</button> 
     </>
   )
 }

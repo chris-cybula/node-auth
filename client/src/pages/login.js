@@ -29,14 +29,6 @@ const Login = () => {
     }
   )
 
-  const userAuth = () => {
-    if (authToken !== null && window.location.pathname === "/login") {
-      navigate("/")
-      return
-    }
-  }
-  userAuth()
-
   const handleRegister = async () => {
     try {
       await axios({
@@ -57,20 +49,13 @@ const handleLogin = async () => {
   .then((response) => {
 
     dispatch(getToken(response.headers["auth-token"]))
-    console.log(response.headers["auth-token"])
+    navigate("/")
 
     alert('Logged in!')
   }, (error) => {
     alert(JSON.stringify(error.response.data))
   });
 }
-
-// const handleMail = async () => {
-//   await axios.get("http://localhost:3000/api/mail", resetEmail);
-//   console.log(resetEmail)
-
-//   alert('Email sent')
-// }
 
 const handleMail = async () => {
   try {

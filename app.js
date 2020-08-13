@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 require("dotenv/config");
 
 const app = express();
@@ -13,8 +14,15 @@ const mailRoute = require('./routes/mail')
 const settingsRoute = require('./routes/settings')
 
 //middlewares
-app.use(cors());
+var corsOptions = {
+  origin: '*',
+  credentials: true }
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.static(__dirname + '/public'));
+
 app.use("/", listRoute);
 app.use("/api/user", authRoute);
 app.use('/api/mail', mailRoute)

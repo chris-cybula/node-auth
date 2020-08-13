@@ -31,7 +31,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
+
+
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -44,6 +46,19 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
   res.header('auth-token', token);
   res.header("Access-Control-Expose-Headers", "auth-token");
+
+  //set http cookie
+
+//   res.cookie('userId', '100',  
+//  { maxAge: 900000,
+//  // You can't access these tokens in the client's javascript
+//    httpOnly: true,
+//    // Forces to use https in production
+//   //  secure: process.env.NODE_ENV === true
+//   });
+  // res.cookie('1', '2');
+  
+  next();
   
   res.send(user)
 });

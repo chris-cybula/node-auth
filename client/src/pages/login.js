@@ -45,16 +45,35 @@ const Login = () => {
 }
 
 const handleLogin = async () => {
-  axios.post('http://localhost:3000/api/user/login', loginData)
-  .then((response) => {
+  // axios.post('http://localhost:3000/api/user/login', loginData)
+  // .then((response) => {
 
-    dispatch(getToken(response.headers["auth-token"]))
-    navigate("/")
+  //   dispatch(getToken(response.headers["auth-token"]))
+  //   navigate("/")
+
+  //   alert('Logged in!')
+  // }, (error) => {
+  //   alert(JSON.stringify(error.response.data))
+  // });
+
+  try {
+    axios.defaults.withCredentials = true;
+    
+    const response = await axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/user/login',
+      data: loginData
+    })
 
     alert('Logged in!')
-  }, (error) => {
-    alert(JSON.stringify(error.response.data))
-  });
+
+    dispatch(getToken(response.headers["auth-token"]))
+    
+    navigate("/")
+  
+  } catch (error) {
+    alert(JSON.stringify(error))
+  }
 }
 
 const handleMail = async () => {

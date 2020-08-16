@@ -47,20 +47,13 @@ router.post("/login", async (req, res, next) => {
   res.header('auth-token', token);
   res.header("Access-Control-Expose-Headers", "auth-token");
 
-  //set http cookie
+  //set http cookie TO DO
+  res.cookie('cookieName', 'cookieValue', { maxAge: 900000, httpOnly: true, secure: false })
 
-//   res.cookie('userId', '100',  
-//  { maxAge: 900000,
-//  // You can't access these tokens in the client's javascript
-//    httpOnly: true,
-//    // Forces to use https in production
-//   //  secure: process.env.NODE_ENV === true
-//   });
-  // res.cookie('1', '2');
-  
   next();
   
-  res.send(user)
+  res.send('ok')
 });
+
 
 module.exports = router;

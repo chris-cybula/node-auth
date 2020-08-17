@@ -45,16 +45,6 @@ const Login = () => {
 }
 
 const handleLogin = async () => {
-  // axios.post('http://localhost:3000/api/user/login', loginData)
-  // .then((response) => {
-
-  //   dispatch(getToken(response.headers["auth-token"]))
-  //   navigate("/")
-
-  //   alert('Logged in!')
-  // }, (error) => {
-  //   alert(JSON.stringify(error.response.data))
-  // });
 
   try {
     axios.defaults.withCredentials = true;

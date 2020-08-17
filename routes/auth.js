@@ -33,27 +33,45 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res, next) => {
 
+  //If cookie
+  if (req.cookies["user"]) {
 
-  const { error } = loginValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+    res.header('auth-token', req.cookies["user"]);
+    res.header("Access-Control-Expose-Headers", "auth-token");
 
-  const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
-  if (!user) return res.status(400).send("Email doesn't exist");
+    console.log(req.cookies["user"])
+    res.send('cookie')
+  } else {
 
-  const validPass = await bcrypt.compare(req.body.password, user.password);
-  if(!validPass) return res.status(400).send("Wrong password");
+    const { error } = loginValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
-  const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-  res.header('auth-token', token);
-  res.header("Access-Control-Expose-Headers", "auth-token");
+    const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
+    if (!user) return res.status(400).send("Email doesn't exist");
 
-  //set http cookie TO DO
-  res.cookie('cookieName', 'cookieValue', { maxAge: 900000, httpOnly: true, secure: false })
+    const validPass = await bcrypt.compare(req.body.password, user.password);
+    if(!validPass) return res.status(400).send("Wrong password");
+
+    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
+
+    res.header('auth-token', token);
+    res.header("Access-Control-Expose-Headers", "auth-token");
+
+    res.cookie('user', token, { maxAge: 900000, httpOnly: true, secure: false })
+    res.send('ok')
+  }
 
   next();
   
-  res.send('ok')
 });
+
+// router.get("/cookie", async (req, res, next) => {
+  
+//   res.send(req.cookies["user"])
+//   next();
+
+//   res.send('ok')
+// });
 
 
 module.exports = router;

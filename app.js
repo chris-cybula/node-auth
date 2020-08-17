@@ -14,15 +14,10 @@ const mailRoute = require('./routes/mail')
 const settingsRoute = require('./routes/settings')
 
 //middlewares
-
-const corsConfig = {
+app.use(cors({
   origin: true,
   credentials: true,
-};
-
-app.use(cors(corsConfig));
-app.options('*', cors(corsConfig));
-
+}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));

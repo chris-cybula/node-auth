@@ -18,10 +18,10 @@ const App = () => {
   }, [])
 
   const userAuth = () => {
-    if (authToken === null && window.location.pathname !== "/login") {
-      navigate("/login")
-      return
-    }
+    // if (authToken === null && window.location.pathname !== "/login") {
+    //   navigate("/login")
+    //   return
+    // }
   }
   
   const getData = async () => {

@@ -33,16 +33,6 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res, next) => {
 
-  //If cookie
-  if (req.cookies["user"]) {
-
-    res.header('auth-token', req.cookies["user"]);
-    res.header("Access-Control-Expose-Headers", "auth-token");
-
-    console.log(req.cookies["user"])
-    res.send('cookie')
-  } else {
-
     const { error } = loginValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -59,19 +49,30 @@ router.post("/login", async (req, res, next) => {
 
     res.cookie('user', token, { maxAge: 900000, httpOnly: true, secure: false })
     res.send('ok')
-  }
+ 
 
   next();
   
 });
 
-// router.get("/cookie", async (req, res, next) => {
-  
-//   res.send(req.cookies["user"])
-//   next();
+router.post("/cookie", async (req, res, next) => {
 
-//   res.send('ok')
-// });
+  //If cookie
+  if (req.cookies["user"]) {
+
+    res.header('auth-token', req.cookies["user"]);
+    res.header("Access-Control-Expose-Headers", "auth-token");
+
+    res.send('cookie')
+
+  } else {
+
+    res.send('no cookie')
+  }
+
+  next();
+  
+});
 
 
 module.exports = router;

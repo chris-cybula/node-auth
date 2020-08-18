@@ -47,7 +47,7 @@ const Login = () => {
 const handleLogin = async () => {
 
   try {
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     
     const response = await axios({
       method: 'post',

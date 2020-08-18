@@ -13,16 +13,16 @@ const App = () => {
   const authToken = useSelector((state) => state.authToken);
 
   useEffect(() => {
-    userAuth()
+    // userAuth()
     getData()
-  }, [])
+  }, [authToken])
 
-  const userAuth = () => {
-    // if (authToken === null && window.location.pathname !== "/login") {
-    //   navigate("/login")
-    //   return
-    // }
-  }
+  // const userAuth = () => {
+  //   if (authToken === null && window.location.pathname !== "/login") {
+  //     navigate("/login")
+  //     return
+  //   }
+  // }
   
   const getData = async () => {
 
@@ -40,6 +40,8 @@ const App = () => {
 
     }
   }
+
+  
 
   const addItem = async () => {
 

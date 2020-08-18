@@ -14,23 +14,25 @@ import { getToken } from "../actions/getToken"
       
       const handleLogin = async () => {
 
+        //if cookie
+
         try {
           axios.defaults.withCredentials = true;
           
           const response = await axios({
             method: 'post',
-            url: 'http://localhost:3000/api/user/login',
+            url: 'http://localhost:3000/api/user/cookie',
           })
           
           if(response.headers["auth-token"]) {
 
-            alert('Cookie')
-        
             dispatch(getToken(response.headers["auth-token"]))
-            
-            navigate("/")
+            console.log(response.headers["auth-token"])
+
+            alert('Cookie')
+          } else {
+            navigate("/login")
           }
-          
         
         } catch (error) {
           alert(JSON.stringify(error))

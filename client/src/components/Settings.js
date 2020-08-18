@@ -81,7 +81,19 @@ const Settings = ({userData, updateData}) => {
       }
   }
 
-  const logout = () => {
+  const logout = async () => {
+
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/user/clear-cookie',
+      })
+      
+     console.log('cookie removed')
+    
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
 
     dispatch(getToken(null))
     navigate("/login")

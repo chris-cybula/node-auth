@@ -74,5 +74,16 @@ router.post("/cookie", async (req, res, next) => {
   
 });
 
+router.post("/clear-cookie", async (req, res, next) => {
+
+ 
+    res.clearCookie("user");
+    res.send('cookie cleared')
+  
+
+  next();
+  
+});
+
 
 module.exports = router;

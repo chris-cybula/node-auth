@@ -28,6 +28,32 @@ const Login = () => {
       email: "",
     }
   )
+  
+
+  useEffect(() => {
+
+    checkCookie()
+  
+  }, [])
+  
+  const checkCookie = async () => {
+  
+    try {
+      axios.defaults.withCredentials = true;
+      
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/user/cookie',
+      })
+      
+      if(response.headers["auth-token"]) {
+        navigate("/")
+      } 
+    
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
+  }
 
   const handleRegister = async () => {
     try {
@@ -47,8 +73,6 @@ const Login = () => {
 const handleLogin = async () => {
 
   try {
-    // axios.defaults.withCredentials = true;
-    
     const response = await axios({
       method: 'post',
       url: 'http://localhost:3000/api/user/login',
@@ -80,6 +104,9 @@ const handleMail = async () => {
     alert(JSON.stringify(error.response.data))
   }
 }
+  const x = false
+
+  if( x === true) {
 
   return (
     <>
@@ -105,7 +132,14 @@ const handleMail = async () => {
     <p>usernameChris1@mail.com || 1Z2EqZEg53</p>
     </>
   )
+  } else {
+    return (
+      <>
+      </>
+    )
+  }
 }
+
 
 export default Login
 

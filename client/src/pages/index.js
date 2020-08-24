@@ -11,44 +11,34 @@ import { getToken } from "../actions/getToken"
     
     useEffect(() => {
 
-      
-      const handleLogin = async () => {
-
-        //if cookie
-
-        try {
-          axios.defaults.withCredentials = true;
-          
-          const response = await axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/user/cookie',
-          })
-          
-          if(response.headers["auth-token"]) {
-
-            dispatch(getToken(response.headers["auth-token"]))
-            console.log(response.headers["auth-token"])
-
-            alert('Cookie')
-          } else {
-            navigate("/login")
-          }
-        
-        } catch (error) {
-          alert(JSON.stringify(error))
-        }
-      }
-
       handleLogin()
-
 
     }, [])
   
-  
+    const handleLogin = async () => {
 
-  
-  
-  
+      try {
+        axios.defaults.withCredentials = true;
+        
+        const response = await axios({
+          method: 'post',
+          url: 'http://localhost:3000/api/user/cookie',
+        })
+        
+        if(response.headers["auth-token"]) {
+
+          dispatch(getToken(response.headers["auth-token"]))
+          console.log(response.headers["auth-token"])
+
+          // alert('Cookie')
+        } else {
+          navigate("/login")
+        }
+      
+      } catch (error) {
+        alert(JSON.stringify(error))
+      }
+    }
   
     return (
       <App />

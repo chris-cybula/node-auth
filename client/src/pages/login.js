@@ -28,15 +28,17 @@ const Login = () => {
       email: "",
     }
   )
-  
+
+  const [isLogged, setIsLogged] = useState()
+
 
   useEffect(() => {
 
-    checkCookie()
+    handleIsLogged()
   
   }, [])
   
-  const checkCookie = async () => {
+  const handleIsLogged = async () => {
   
     try {
       axios.defaults.withCredentials = true;
@@ -48,8 +50,11 @@ const Login = () => {
       
       if(response.headers["auth-token"]) {
         navigate("/")
-      } 
-    
+        setIsLogged(true)
+      } else {
+        setIsLogged(false)
+      }
+      
     } catch (error) {
       alert(JSON.stringify(error))
     }
@@ -104,9 +109,8 @@ const handleMail = async () => {
     alert(JSON.stringify(error.response.data))
   }
 }
-  const x = false
 
-  if( x === true) {
+  if( isLogged === false) {
 
   return (
     <>

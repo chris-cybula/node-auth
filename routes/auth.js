@@ -6,14 +6,26 @@ const {registerValidation, loginValidation } = require("../utils/validation.js")
 const jwt = require('jsonwebtoken')
 
 router.post("/register", async (req, res) => {
+  let nameExist = null
+  let emailExist = null
+  let errors = null
+  
+  const userName = await User.findOne({ name: req.body.name });
+  if (userName) {
+    nameExist = true
+  }
+
+  const userEmail = await User.findOne({ email: req.body.email });
+  if (userEmail) {
+    emailExist = true
+  }
+
   const { error } = registerValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    errors = error.details
+  }
 
-  const emailExist = await User.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).send("Email already exists");
-
-  const nameExist = await User.findOne({ name: req.body.name });
-  if (nameExist) return res.status(400).send("Name already exists");
+  if (error || nameExist === true || emailExist === true ) return res.status(400).send({errors: errors, emailExist: emailExist, nameExist: nameExist});
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);

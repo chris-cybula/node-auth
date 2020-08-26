@@ -4,6 +4,14 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../actions/getToken"
+import styled from "styled-components"
+
+const ValidationMsg = styled.p`
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: red;
+`
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -72,6 +80,12 @@ const Login = () => {
     
     } catch (error) {
       alert(JSON.stringify(error.response.data))
+      console.log(error.response.data)
+
+
+      ////
+
+
     }
 }
 
@@ -116,10 +130,19 @@ const handleMail = async () => {
     <>
     <h1>Login</h1>
     <div>
-       <p>Register</p>
-        <input placeholder="username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
-        <input placeholder="email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
-        <input placeholder="password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
+    <p>Register</p>
+    <div>
+      <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
+      <ValidationMsg>Username cannot be empty</ValidationMsg>
+    </div>
+    <div>
+      <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
+      <ValidationMsg>Email cannot be empty</ValidationMsg>
+    </div>
+    <div>
+      <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
+      <ValidationMsg>Password cannot be empty</ValidationMsg>
+    </div>
         <button onClick={handleRegister}>Register</button> 
     </div>
     <div>
@@ -133,7 +156,6 @@ const handleMail = async () => {
         <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
         <button onClick={handleMail}>Send password reset email</button> 
     </div>
-    <p>usernameChris1@mail.com || 1Z2EqZEg53</p>
     </>
   )
   } else {

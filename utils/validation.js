@@ -2,10 +2,58 @@ const Joi = require("@hapi/joi");
 
 const registerValidation = (data) => {
   const schema = Joi.object({
-    name: Joi.string().min(6).required(),
-    email: Joi.string().min(6).required().email(),
-    password: Joi.string().min(6).required(),
-  });
+    name: Joi.string()
+      .min(6)
+      .required()
+      .error(errors => {
+        errors.forEach(err => {
+          switch (err.code) {
+            case "string.empty":
+              err.message = "Value should not be empty!!!";
+              break;
+            case "string.min":
+              err.message = `Value should have at least 6 characters!!!`;
+              break;
+          }
+        });
+        return errors;
+      }),
+
+    email: Joi.string()
+      .required()
+      .email()
+      .error(errors => {
+        errors.forEach(err => {
+          switch (err.code) {
+            case "string.empty":
+              err.message = "Value should not be empty!!!";
+            break;
+            case "string.email":
+              err.message = `Value should be a valid email!!!`;
+            break;
+          }
+        });
+        return errors;
+      }),
+
+    password: Joi.string()
+      .min(6)
+      .required()
+      .error(errors => {
+        errors.forEach(err => {
+          switch (err.code) {
+            case "string.empty":
+              err.message = "Password should not be empty!!!";
+              break;
+            case "string.min":
+              err.message = `Password should have at least 6 characters!!!`;
+              break;
+          }
+        });
+        return errors;
+      }),
+
+  }).options({abortEarly : false});
 
   return schema.validate(data);
 };

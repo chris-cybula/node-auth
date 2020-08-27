@@ -3,8 +3,8 @@ const Joi = require("@hapi/joi");
 const registerValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string()
+    .required()
       .min(6)
-      .required()
       .error(errors => {
         errors.forEach(err => {
           switch (err.code) {
@@ -37,8 +37,8 @@ const registerValidation = (data) => {
       }),
 
     password: Joi.string()
-      .min(6)
       .required()
+      .min(6)
       .error(errors => {
         errors.forEach(err => {
           switch (err.code) {
@@ -60,9 +60,29 @@ const registerValidation = (data) => {
 
 const loginValidation = (data) => {
   const schema = Joi.object({
-    nameOrEmail: Joi.string().min(6).required(),
-    password: Joi.string().min(6).required(),
-  });
+    nameOrEmail: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Can not be empty!!!";
+            break;
+        }
+      });
+      return errors;
+    }),
+    password: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Can not be empty!!!";
+            break;
+        }
+      });
+      return errors;
+    }),
+  }).options({abortEarly : false});
 
   return schema.validate(data);
 };
@@ -70,7 +90,7 @@ const loginValidation = (data) => {
 const changeNameValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string().min(6).required()
-  });
+  })
 
   return schema.validate(data);
 };

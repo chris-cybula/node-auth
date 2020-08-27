@@ -45,14 +45,31 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res, next) => {
 
-    const { error } = loginValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    let errors = null
+    let nameOrEmailExist = null
+    let passwordExist = null
 
-    const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
-    if (!user) return res.status(400).send("Email doesn't exist");
+    const userName = await User.findOne({ name: req.body.name });
+    if (userName) {
+      nameExist = true
+    }
+  
+    const userEmail = await User.findOne({ email: req.body.email });
+    if (userEmail) {
+      emailExist = true
+    }
+
+    const { error } = loginValidation(req.body);
+    if (error) {
+      errors = error.details
+    }
+
+    if (error) return res.status(400).send({errors: errors});
+
+    // if (!user) return res.status(400).send("Email doesn't exist");
 
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if(!validPass) return res.status(400).send("Wrong password");
+    // if(!validPass) return res.status(400).send("Wrong password");
 
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
 

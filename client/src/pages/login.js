@@ -11,6 +11,7 @@ const ValidationMsg = styled.p`
   margin-bottom: 5px;
   font-size: 14px;
   color: red;
+  height: 17px;
 `
 
 const Login = () => {
@@ -24,6 +25,15 @@ const Login = () => {
       password: "",
     }
   )
+
+  const [registerErrors, setRegisterErrors] = useState(
+    { 
+      name: "",
+      email: "",
+      password: "",
+    }
+  )
+
   const [loginData, setLoginData] = useState(
     { 
       nameOrEmail: "",
@@ -36,6 +46,8 @@ const Login = () => {
       email: "",
     }
   )
+
+  
 
   const [isLogged, setIsLogged] = useState()
 
@@ -77,15 +89,44 @@ const Login = () => {
       })
 
       alert('Registered!')
+
+      setRegisterErrors({
+        name: '', 
+        email: '', 
+        password: ''
+      })
     
     } catch (error) {
-      alert(JSON.stringify(error.response.data))
-      console.log(error.response.data)
 
+      let nameMsg = '';
+      let emailMsg = '';
+      let passwordMsg = '';
+      
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "name")) {
+        nameMsg = error.response.data.errors.find(element => element.context.key === "name").message
+      }
 
-      ////
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "email")) {
+        emailMsg = error.response.data.errors.find(element => element.context.key === "email").message
+      }
 
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "password")) {
+        passwordMsg = error.response.data.errors.find(element => element.context.key === "password").message
+      }
 
+      if(error.response.data.emailExist && error.response.data.emailExist === true) {
+        emailMsg = 'Email already exist'
+      }
+
+      if(error.response.data.nameExist && error.response.data.nameExist === true) {
+        nameMsg = 'Name already exist'
+      }
+
+      setRegisterErrors({
+        name: nameMsg, 
+        email: emailMsg, 
+        password: passwordMsg
+      })
     }
 }
 
@@ -106,6 +147,8 @@ const handleLogin = async () => {
   
   } catch (error) {
     alert(JSON.stringify(error))
+
+    console.log(error.response)
   }
 }
 
@@ -133,22 +176,24 @@ const handleMail = async () => {
     <p>Register</p>
     <div>
       <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
-      <ValidationMsg>Username cannot be empty</ValidationMsg>
+      <ValidationMsg>{registerErrors.name}</ValidationMsg>
     </div>
     <div>
       <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
-      <ValidationMsg>Email cannot be empty</ValidationMsg>
+      <ValidationMsg>{registerErrors.email}</ValidationMsg>
     </div>
     <div>
       <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
-      <ValidationMsg>Password cannot be empty</ValidationMsg>
+      <ValidationMsg>{registerErrors.password}</ValidationMsg>
     </div>
         <button onClick={handleRegister}>Register</button> 
     </div>
     <div>
        <p>Login</p>
         <input placeholder="username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
+        <ValidationMsg>validation</ValidationMsg>
         <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
+        <ValidationMsg>validation</ValidationMsg>
         <button onClick={handleLogin}>Login</button> 
     </div>
     <div>

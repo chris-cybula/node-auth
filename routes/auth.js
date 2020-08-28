@@ -46,35 +46,27 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res, next) => {
 
     let nameOrEmail = null
-    let userPassword = null
+    let password = null
     let errors = null
 
     const { error } = loginValidation(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
     if (error) {
       errors = error.details
     }
 
     const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
-    // if (!user) return res.status(400).send("Email doesn't exist");
     if (!user) {
       nameOrEmail = false
     }
 
     if(user) {
       const validPass = await bcrypt.compare(req.body.password, user.password);
-      // if(!validPass) return res.status(400).send("Wrong password");
       if (!validPass) {
-        userPassword = false
+        password = false
       }
   }
 
-    console.log(req.body)
-
-
-    if (error || nameOrEmail === false || userPassword === false ) return res.status(400).send({errors: errors, nameOrEmail: nameOrEmail, userPassword: userPassword});
-
-
+    if (error || nameOrEmail === false || password === false ) return res.status(400).send({errors: errors, nameOrEmail: nameOrEmail, password: password});
 
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
 
@@ -83,7 +75,6 @@ router.post("/login", async (req, res, next) => {
 
     res.cookie('user', token, { maxAge: 900000, httpOnly: true, secure: false })
     // res.send('ok')
- 
 
   next();
   

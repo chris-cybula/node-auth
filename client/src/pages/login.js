@@ -154,9 +154,31 @@ const handleLogin = async () => {
     navigate("/")
   
   } catch (error) {
-    alert(JSON.stringify(error))
+      let nameOrEmailMsg = '';
+      let passwordMsg = '';
 
-    console.log(error.response)
+      if(error.response.data.nameOrEmail === false) {
+        nameOrEmailMsg = 'Wrong name or email'
+      }
+
+      if(error.response.data.password === false) {
+        passwordMsg = 'Wrong password'
+      }
+      
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "nameOrEmail")) {
+        nameOrEmailMsg = error.response.data.errors.find(element => element.context.key === "nameOrEmail").message
+      }
+
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "password")) {
+        passwordMsg = error.response.data.errors.find(element => element.context.key === "password").message
+      }
+
+      setLoginErrors({
+        nameOrEmail: nameOrEmailMsg ,
+        password: passwordMsg,
+      })
+
+      console.log(error.response.data)
   }
 }
 
@@ -199,9 +221,9 @@ const handleMail = async () => {
     <div>
        <p>Login</p>
         <input placeholder="username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
-        <ValidationMsg>validation</ValidationMsg>
+        <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
         <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
-        <ValidationMsg>validation</ValidationMsg>
+        <ValidationMsg>{loginErrors.password}</ValidationMsg>
         <button onClick={handleLogin}>Login</button> 
     </div>
     <div>

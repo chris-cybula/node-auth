@@ -45,31 +45,36 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res, next) => {
 
+    let nameOrEmail = null
+    let userPassword = null
     let errors = null
-    let nameOrEmailExist = null
-    let passwordExist = null
-
-    const userName = await User.findOne({ name: req.body.name });
-    if (userName) {
-      nameExist = true
-    }
-  
-    const userEmail = await User.findOne({ email: req.body.email });
-    if (userEmail) {
-      emailExist = true
-    }
 
     const { error } = loginValidation(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
     if (error) {
       errors = error.details
     }
 
-    if (error) return res.status(400).send({errors: errors});
-
+    const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
     // if (!user) return res.status(400).send("Email doesn't exist");
+    if (!user) {
+      nameOrEmail = false
+    }
 
-    const validPass = await bcrypt.compare(req.body.password, user.password);
-    // if(!validPass) return res.status(400).send("Wrong password");
+    if(user) {
+      const validPass = await bcrypt.compare(req.body.password, user.password);
+      // if(!validPass) return res.status(400).send("Wrong password");
+      if (!validPass) {
+        userPassword = false
+      }
+  }
+
+    console.log(req.body)
+
+
+    if (error || nameOrEmail === false || userPassword === false ) return res.status(400).send({errors: errors, nameOrEmail: nameOrEmail, userPassword: userPassword});
+
+
 
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
 
@@ -77,7 +82,7 @@ router.post("/login", async (req, res, next) => {
     res.header("Access-Control-Expose-Headers", "auth-token");
 
     res.cookie('user', token, { maxAge: 900000, httpOnly: true, secure: false })
-    res.send('ok')
+    // res.send('ok')
  
 
   next();

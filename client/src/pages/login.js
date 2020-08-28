@@ -41,6 +41,14 @@ const Login = () => {
     }
   )
 
+  const [loginErrors, setLoginErrors] = useState(
+    { 
+      nameOrEmail: "",
+      password: "",
+    }
+  )
+
+
   const [resetEmail, setResetEmail] = useState(
     { 
       email: "",

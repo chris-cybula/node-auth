@@ -74,7 +74,7 @@ router.post("/login", async (req, res, next) => {
     res.header("Access-Control-Expose-Headers", "auth-token");
 
     res.cookie('user', token, { maxAge: 900000, httpOnly: true, secure: false })
-    // res.send('ok')
+    res.send('ok')
 
   next();
   

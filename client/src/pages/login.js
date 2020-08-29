@@ -177,8 +177,6 @@ const handleLogin = async () => {
         nameOrEmail: nameOrEmailMsg ,
         password: passwordMsg,
       })
-
-      console.log(error.response.data)
   }
 }
 

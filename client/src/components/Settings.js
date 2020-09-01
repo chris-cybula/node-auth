@@ -1,9 +1,18 @@
 import React from "react"
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
 import { getToken } from "../actions/getToken"
 import { Link, navigate } from "gatsby"
+import styled from "styled-components"
+
+const ValidationMsg = styled.p`
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: red;
+  height: 17px;
+`
 
 const Settings = ({userData, updateData}) => {
   const dispatch = useDispatch();
@@ -106,6 +115,7 @@ const Settings = ({userData, updateData}) => {
           <div>
             <p>Change username - {userData.name}</p>
               <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
+              <ValidationMsg>Error</ValidationMsg>
               <button onClick={changeName}>Change username</button> 
           </div>
           <div>

@@ -11,6 +11,9 @@ router.post('/name', verify, async (req, res) => {
     const { error } = changeNameValidation({name: req.body[1].newName});
     if (error) return res.status(400).send(error.details[0].message);
 
+
+    console.log(error)
+
     try {
         User.findByIdAndUpdate(req.user, { $set: { name: req.body[1].newName } }).exec();
         res.json('ok');

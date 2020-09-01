@@ -48,17 +48,19 @@ const Login = () => {
     }
   )
 
-
   const [resetEmail, setResetEmail] = useState(
     { 
       email: "",
     }
   )
 
-  
+  const [resetEmailError, setResetEmailError] = useState(
+    { 
+      emailError: ""
+    }
+  )
 
   const [isLogged, setIsLogged] = useState()
-
 
   useEffect(() => {
 
@@ -188,10 +190,27 @@ const handleMail = async () => {
       data: resetEmail
     })
 
+    setResetEmailError({
+      emailError: ''
+    })
+
     alert('Email sent')
   
   } catch (error) {
-    alert(JSON.stringify(error.response.data))
+
+    let emailErrorMsg = '';
+
+    if(error.response.data.errors) {
+      emailErrorMsg = error.response.data.errors[0].message
+    }
+
+    if(error.response.data.errors === null && error.response.data.emailExist === false) {
+      emailErrorMsg = 'Email doesn\'t exist' 
+    }
+
+    setResetEmailError({
+      emailError: emailErrorMsg ,
+    })
   }
 }
 
@@ -227,6 +246,7 @@ const handleMail = async () => {
     <div>
        <p>Reset password</p>
         <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
+        <ValidationMsg>{resetEmailError.emailError}</ValidationMsg>
         <button onClick={handleMail}>Send password reset email</button> 
     </div>
     </>

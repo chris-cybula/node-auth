@@ -5,13 +5,27 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 var generator = require('generate-password');
 require("dotenv/config");
+const { resetEmailValidation } = require("../utils/validation.js");
 
 router.post('/', async (req, res) => {
 
-    console.log(req.body.email)
+    let emailExist = null
+    let errors = null
+
+    const { error } = resetEmailValidation({email: req.body.email});
+    if (error) {
+        errors = error.details
+    }
+
+    console.log('email', req.body)
 
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send("Email doesn't exist");
+    if (!user) {
+        emailExist = false
+    }
+
+    // console.log(error)
+    if (error || emailExist === false) return res.status(400).send({errors: errors, emailExist: emailExist});
 
     var newPassword = generator.generate({
         length: 10,

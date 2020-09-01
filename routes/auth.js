@@ -20,6 +20,8 @@ router.post("/register", async (req, res) => {
     emailExist = true
   }
 
+  console.log(req.body)
+  
   const { error } = registerValidation(req.body);
   if (error) {
     errors = error.details

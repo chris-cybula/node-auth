@@ -87,6 +87,28 @@ const loginValidation = (data) => {
   return schema.validate(data);
 };
 
+const resetEmailValidation = (data) => {
+  const schema = Joi.object({
+    email: Joi.string().required()
+      .email()
+      .error(errors => {
+        errors.forEach(err => {
+          switch (err.code) {
+            case "string.empty":
+              err.message = "Value should not be empty!!!";
+            break;
+            case "string.email":
+              err.message = `Value should be a valid email!!!`;
+            break;
+          }
+        });
+        return errors;
+      }),
+  }).options({abortEarly : false});
+
+  return schema.validate(data);
+};
+
 const changeNameValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string().min(6).required()
@@ -116,6 +138,7 @@ const changePasswordValidation = (data) => {
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
+module.exports.resetEmailValidation = resetEmailValidation;
 
 module.exports.changeNameValidation = changeNameValidation;
 module.exports.changeEmailValidation = changeEmailValidation;

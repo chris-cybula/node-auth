@@ -30,7 +30,11 @@ const Settings = ({userData, updateData}) => {
     }
   )
 
+  const [nameError, setNameError] = useState()
+
   const changeName = async () => {
+
+    let nameErrorMsg = '';
 
     try {
         await axios({
@@ -40,13 +44,26 @@ const Settings = ({userData, updateData}) => {
         //   headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjIyZTAwNDRkM2M4ZmU1NTc1YzE5OTYiLCJpYXQiOjE1OTYxMjEzMjN9.wEQF3I4CCuE_hFUEr1ooJgmj-3PiIxO7YIEhdOBaDgI'}
             headers: { 'auth-token': authToken.token }
         })
+
+        setNameError("")
     
         alert('Name changed')
 
         updateData('name', settingsData.newName)
       
       } catch (error) {
-        alert(JSON.stringify(error.response.data))
+
+        if(error.response.data.errors) {
+          nameErrorMsg = error.response.data.errors[0].message
+        }
+    
+        if(error.response.data.errors === null && error.response.data.name === true) {
+          nameErrorMsg = 'Name already exist' 
+        }
+
+        setNameError(nameErrorMsg)
+        
+        console.log(error.response.data)
       }
   }
 
@@ -115,7 +132,7 @@ const Settings = ({userData, updateData}) => {
           <div>
             <p>Change username - {userData.name}</p>
               <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
-              <ValidationMsg>Error</ValidationMsg>
+              <ValidationMsg>{nameError}</ValidationMsg>
               <button onClick={changeName}>Change username</button> 
           </div>
           <div>

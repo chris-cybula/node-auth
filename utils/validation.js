@@ -111,8 +111,18 @@ const resetEmailValidation = (data) => {
 
 const changeNameValidation = (data) => {
   const schema = Joi.object({
-    name: Joi.string().min(6).required()
-  })
+    name: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+}).options({abortEarly : false});
 
   return schema.validate(data);
 };

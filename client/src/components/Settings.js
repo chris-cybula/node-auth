@@ -20,8 +20,8 @@ const Settings = ({userData, updateData}) => {
 
   const [settingsData, setSettingsData] = useState(
     {   
-        newName: "",
         oldEmail: "",
+        newName: "",
         newEmail: "",
         confirmedEmail: "",
         oldPassword: "",
@@ -31,6 +31,14 @@ const Settings = ({userData, updateData}) => {
   )
 
   const [nameError, setNameError] = useState()
+  
+  const [emailError, setEmailError] = useState(
+    {   
+        oldEmailError: "",
+        newEmailError: "",
+        confirmedEmailError: "",
+    }
+  )
 
   const changeName = async () => {
 
@@ -62,12 +70,14 @@ const Settings = ({userData, updateData}) => {
         }
 
         setNameError(nameErrorMsg)
-        
-        console.log(error.response.data)
       }
   }
 
   const changeEmail = async () => {
+
+    let oldEmailMsg = null
+    let newEmailMsg = null
+    let confirmedEmailMsg = null
 
     try {
         await axios({
@@ -81,9 +91,47 @@ const Settings = ({userData, updateData}) => {
         alert('Email changed')
 
         updateData('email', settingsData.newEmail)
+
+        setEmailError({
+          oldEmailError: null,
+          newEmailError: null,
+          confirmedEmailError: null
+        })
       
       } catch (error) {
-        alert(JSON.stringify(error.response.data))
+        // alert(JSON.stringify(error.response.data))
+        console.log(error.response.data)
+
+        if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "oldEmail")) {
+          oldEmailMsg = error.response.data.errors.find(element => element.context.key === "oldEmail").message
+        }
+
+        if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "newEmail")) {
+          newEmailMsg = error.response.data.errors.find(element => element.context.key === "newEmail").message
+        }
+
+        if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "confirmedEmail")) {
+          confirmedEmailMsg = error.response.data.errors.find(element => element.context.key === "confirmedEmail").message
+        }
+
+        if(error.response.data.oldEmail === false) {
+          oldEmailMsg = "Wrong old email"
+        }
+
+        if(error.response.data.newEmail === true) {
+          newEmailMsg = "Email already exists"
+        }
+
+        if(error.response.data.confirmedEmail === false) {
+          confirmedEmailMsg = "Emails are not the same"
+        }
+
+        setEmailError({
+          oldEmailError: oldEmailMsg,
+          newEmailError: newEmailMsg,
+          confirmedEmailError: confirmedEmailMsg
+        })
+
       }
   }
 
@@ -138,8 +186,11 @@ const Settings = ({userData, updateData}) => {
           <div>
             <p>Change email - {userData.email}</p>
               <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
+              <ValidationMsg>{emailError.oldEmailError}</ValidationMsg>
               <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
+              <ValidationMsg>{emailError.newEmailError}</ValidationMsg>
               <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
+              <ValidationMsg>{emailError.confirmedEmailError}</ValidationMsg>
               <button onClick={changeEmail}>Change email</button> 
           </div>
           <div>
@@ -149,7 +200,6 @@ const Settings = ({userData, updateData}) => {
               <input placeholder="Confirm new password" onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
               <button onClick={changePassword}>Change password</button> 
           </div>
-          <p>Logout</p>
           <button onClick={logout}>Logout</button> 
     </>
   )

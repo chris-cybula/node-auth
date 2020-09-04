@@ -129,9 +129,43 @@ const changeNameValidation = (data) => {
 
 const changeEmailValidation = (data) => {
   const schema = Joi.object({
-    newEmail: Joi.string().min(6).required().email(),
-    confirmedEmail: Joi.string().required(),
-  });
+    oldEmail: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+    newEmail: Joi.string().required().email()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+          case "string.email":
+              err.message = `Value should be a valid email!!!`;
+          break;
+        }
+      });
+      return errors;
+    }),
+    confirmedEmail: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+  }).options({abortEarly : false});
 
   return schema.validate(data);
 };

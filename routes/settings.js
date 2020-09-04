@@ -7,7 +7,6 @@ const bcrypt = require("bcryptjs");
 router.post('/name', verify, async (req, res) => {
 
     let name = null
-    let theSameName = null
     let errors = null
 
     const { error } = changeNameValidation({name: req.body[1].newName});
@@ -33,28 +32,37 @@ router.post('/name', verify, async (req, res) => {
 router.post('/email', verify, async (req, res) => {
 
     const data = await User.find( { _id: req.user });
-
-    //old
-
-    if(req.body[1].oldEmail === '') return res.status(400).send("Old email empty");
-    if(req.body[1].oldEmail !== data[0].email) return res.status(400).send("Wrong old email");
-
-    //new
+    let errors = null
+    let oldEmail = null
+    let newEmail = null
+    let confirmedEmail = null
 
     const { error } = changeEmailValidation({
-        newEmail: req.body[1].newEmail,
-        confirmedEmail: req.body[1].confirmedEmail
+      oldEmail: req.body[1].oldEmail,
+      newEmail: req.body[1].newEmail,
+      confirmedEmail: req.body[1].confirmedEmail
     });
 
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) {
+      errors = error.details
+    }
 
-    //confirmed
+    if(req.body[1].oldEmail !== '' && req.body[1].oldEmail !== data[0].email) {
+      oldEmail = false
+    }
 
-    if(req.body[1].newEmail !== req.body[1].confirmedEmail) return res.status(400).send("Emails are not the same");
+    const emailExists = await User.findOne({ email: req.body[1].newEmail });
+    if (emailExists) {
+      newEmail = true
+    }
 
-    //update
+    if(req.body[1].confirmedEmail !== '' && req.body[1].newEmail !== req.body[1].confirmedEmail) {
+      confirmedEmail = false
+    }
 
-    if(req.body[1].oldEmail === req.body[1].newEmail) return res.status(400).send("New email is the same");
+    if (error || oldEmail === false || newEmail === true || confirmedEmail === false) return res.status(400).send({errors: errors, oldEmail: oldEmail, newEmail: newEmail, confirmedEmail: confirmedEmail});
+
+    console.log(errors)
 
     try {
         User.findByIdAndUpdate(req.user, { $set: { email: req.body[1].newEmail } }).exec();

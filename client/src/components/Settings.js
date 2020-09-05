@@ -31,6 +31,13 @@ const Settings = ({userData, updateData}) => {
     }
   )
 
+  const [deleteData, setDeleteData] = useState(
+    {   
+        nameOrEmail: "",
+        verification: "",
+    }
+  )
+
   const [nameError, setNameError] = useState()
   
   const [emailError, setEmailError] = useState(
@@ -49,10 +56,10 @@ const Settings = ({userData, updateData}) => {
     }
   )
 
-  const [deleteData, setDeleteData] = useState(
+  const [deleteError, setDeleteError] = useState(
     {   
-        nameOrEmail: "",
-        verification: "",
+        nameOrEmailError: "",
+        verificationError: "",
     }
   )
 
@@ -232,6 +239,10 @@ const Settings = ({userData, updateData}) => {
   }
 
   const deleteAccount = async () => {
+
+    let nameOrEmailMsg = null;
+    let verificationMsg = null;
+
     try {
       await axios({
         method: 'post',
@@ -245,8 +256,29 @@ const Settings = ({userData, updateData}) => {
       alert('Account has been deleted')
     
     } catch (error) {
-      alert(JSON.stringify(error))
+      
+      if(error.response.data.nameOrEmail === false) {
+        nameOrEmailMsg = "Wrong name or Email"
+      }
+
+      if(error.response.data.verification === false) {
+        verificationMsg = "Wrong value"
+      }
+      
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "nameOrEmail")) {
+        nameOrEmailMsg = error.response.data.errors.find(element => element.context.key === "nameOrEmail").message
+      }
+
+      if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "verification")) {
+        verificationMsg = error.response.data.errors.find(element => element.context.key === "verification").message
+      }
     }
+
+    setDeleteError({
+      nameOrEmailError: nameOrEmailMsg,
+      verificationError: verificationMsg,
+    })
+
   }
 
   return (
@@ -281,9 +313,9 @@ const Settings = ({userData, updateData}) => {
           <div>
             <p>Delete account</p>
               <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
-              <ValidationMsg>error</ValidationMsg>
+              <ValidationMsg>{deleteError. nameOrEmailError}</ValidationMsg>
               <input placeholder="delete my account" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
-              <ValidationMsg>error</ValidationMsg>
+              <ValidationMsg>{deleteError.verificationError}</ValidationMsg>
               <button onClick={deleteAccount}>Delete</button> 
           </div>
           <p>Logout</p>

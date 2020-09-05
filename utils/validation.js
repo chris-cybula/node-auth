@@ -213,14 +213,43 @@ const changePasswordValidation = (data) => {
   return schema.validate(data);
 };
 
+const deleteValidation = (data) => {
+  const schema = Joi.object({
+    nameOrEmail: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+    verification: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+  }).options({abortEarly : false});
+
+  return schema.validate(data);
+};
+
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.resetEmailValidation = resetEmailValidation;
-
 module.exports.changeNameValidation = changeNameValidation;
 module.exports.changeEmailValidation = changeEmailValidation;
 module.exports.changePasswordValidation = changePasswordValidation;
+module.exports.deleteValidation = deleteValidation;
 
 
 

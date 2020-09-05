@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const verify = require('../utils/verifyToken')
 const User = require("../models/User");
-const { changeNameValidation, changeEmailValidation, changePasswordValidation } = require("../utils/validation.js");
+const { changeNameValidation, changeEmailValidation, changePasswordValidation, deleteValidation } = require("../utils/validation.js");
 const bcrypt = require("bcryptjs");
 
 router.post('/name', verify, async (req, res) => {
@@ -124,19 +124,31 @@ router.post('/password', verify, async (req, res) => {
 
 router.post('/delete', verify, async (req, res) => {
 
-  let nameOrEmail = null
-
   const user = await User.find( { _id: req.body[0] });
+  let errors = null
+  let nameOrEmail = null
+  let verification = null
 
-  if(req.body[1].nameOrEmail === user[0].name || req.body[1].nameOrEmail === user[0].email && req.body[1].verification === 'delete my account') {
-    console.log('true')
-    await User.deleteOne({ _id: req.body[0] })
-    res.clearCookie("user");
-  } else {
-    console.log('false')
+  const { error } = deleteValidation({nameOrEmail: req.body[1].nameOrEmail, verification: req.body[1].verification});
+  if (error) {
+    errors = error.details
   }
+
+  if(req.body[1].nameOrEmail !== '' && req.body[1].nameOrEmail !== user[0].name) {
+    nameOrEmail = false
+  }
+
+  if(req.body[1].verification !== '' && req.body[1].verification !== 'delete my account') {
+    verification = false
+  }
+
+  if (error || nameOrEmail === false || verification === false) return res.status(400).send({errors: errors, nameOrEmail: nameOrEmail, verification: verification});
+
+
+  await User.deleteOne({ _id: req.body[0] })
+  res.clearCookie("user");
     
-  res.json({user: nameOrEmail});
+  res.json(errors);
 
 });
 

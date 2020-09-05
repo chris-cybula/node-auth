@@ -239,6 +239,10 @@ const Settings = ({userData, updateData}) => {
         data: [userData._id, deleteData],
         headers: { 'auth-token': authToken.token }
       })
+
+      dispatch(getToken(null))
+      navigate("/login")
+      alert('Account has been deleted')
     
     } catch (error) {
       alert(JSON.stringify(error))

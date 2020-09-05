@@ -126,13 +126,16 @@ router.post('/delete', verify, async (req, res) => {
 
   let nameOrEmail = null
 
-  const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
-    if (!user) {
-      nameOrEmail = false
-    }
+  const user = await User.find( { _id: req.body[0] });
 
-    console.log(req.body)
-
+  if(req.body[1].nameOrEmail === user[0].name || req.body[1].nameOrEmail === user[0].email && req.body[1].verification === 'delete my account') {
+    console.log('true')
+    await User.deleteOne({ _id: req.body[0] })
+    res.clearCookie("user");
+  } else {
+    console.log('false')
+  }
+    
   res.json({user: nameOrEmail});
 
 });

@@ -47,7 +47,7 @@ const registerValidation = (data) => {
               break;
             case "string.min":
               err.message = `Password should have at least 6 characters!!!`;
-              break;
+            break;
           }
         });
         return errors;
@@ -172,9 +172,43 @@ const changeEmailValidation = (data) => {
 
 const changePasswordValidation = (data) => {
   const schema = Joi.object({
-    newPassword: Joi.string().min(6).required(),
-    confirmedPassword: Joi.string().required(),
-  });
+    oldPassword: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+    newPassword: Joi.string().min(6).required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+          case "string.min":
+              err.message = `Password should have at least 6 characters!!!`;
+          break;
+        }
+      });
+      return errors;
+    }),
+    confirmedPassword: Joi.string().required()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+  }).options({abortEarly : false});
 
   return schema.validate(data);
 };

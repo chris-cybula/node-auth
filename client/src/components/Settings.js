@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getToken } from "../actions/getToken"
 import { Link, navigate } from "gatsby"
 import styled from "styled-components"
+// import { response } from "express"
 
 const ValidationMsg = styled.p`
   margin-top: 0;
@@ -37,6 +38,14 @@ const Settings = ({userData, updateData}) => {
         oldEmailError: "",
         newEmailError: "",
         confirmedEmailError: "",
+    }
+  )
+
+  const [passwordError, setPasswordError] = useState(
+    {   
+        oldPasswordError: "",
+        newPasswordError: "",
+        confirmedPasswordError: "",
     }
   )
 
@@ -137,6 +146,10 @@ const Settings = ({userData, updateData}) => {
 
   const changePassword = async () => {
 
+    let oldPasswordMsg = null
+    let newPasswordMsg = null
+    let confirmedPasswordMsg = null
+
     try {
         await axios({
           method: 'post',
@@ -149,9 +162,46 @@ const Settings = ({userData, updateData}) => {
         alert('Pass changed')
 
         updateData('password', settingsData.newPassword)
+
+        setPasswordError({
+          oldPasswordError: '',
+          newPasswordError: '',
+          confirmedPasswordError: ''
+        })
       
       } catch (error) {
-        alert(JSON.stringify(error.response.data))
+        // alert(JSON.stringify(error.response.data))
+        console.log(error.response.data)
+
+        if(error.response.data.oldPassword === false) {
+          oldPasswordMsg = "Wrong old password"
+        }
+
+        if(error.response.data.confirmedPassword === false) {
+          confirmedPasswordMsg = "Passwords are not the same"
+        }
+
+        if(error.response.data.newPassword === false) {
+          newPasswordMsg = "Passwords are the same"
+        }
+
+        if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "oldPassword")) {
+          oldPasswordMsg = error.response.data.errors.find(element => element.context.key === "oldPassword").message
+        }
+
+        if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "newPassword")) {
+          newPasswordMsg = error.response.data.errors.find(element => element.context.key === "newPassword").message
+        }
+
+        if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "confirmedPassword")) {
+          confirmedPasswordMsg = error.response.data.errors.find(element => element.context.key === "confirmedPassword").message
+        }
+
+        setPasswordError({
+          oldPasswordError: oldPasswordMsg,
+          newPasswordError: newPasswordMsg,
+          confirmedPasswordError: confirmedPasswordMsg
+        })
       }
   }
 
@@ -172,6 +222,21 @@ const Settings = ({userData, updateData}) => {
     dispatch(getToken(null))
     navigate("/login")
     alert('logout')
+  }
+
+  const deleteAccount = async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/settings/delete',
+        headers: { 'auth-token': authToken.token }
+      })
+
+     console.log('delete')
+    
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
   }
 
   return (
@@ -196,10 +261,22 @@ const Settings = ({userData, updateData}) => {
           <div>
             <p>Change password - {userData.password}</p>
               <input placeholder="Old password" onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
+              <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
               <input placeholder="New password" onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
+              <ValidationMsg>{passwordError.newPasswordError}</ValidationMsg>
               <input placeholder="Confirm new password" onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
+              <ValidationMsg>{passwordError.confirmedPasswordError}</ValidationMsg>
               <button onClick={changePassword}>Change password</button> 
           </div>
+          <div>
+            <p>Delete account</p>
+              <input placeholder="Your username or email" />
+              <ValidationMsg>error</ValidationMsg>
+              <input placeholder="delete my account" />
+              <ValidationMsg>error</ValidationMsg>
+              <button onClick={deleteAccount}>Delete</button> 
+          </div>
+          <p>Logout</p>
           <button onClick={logout}>Logout</button> 
     </>
   )

@@ -5,6 +5,16 @@ import axios from "axios"
 import { Link, navigate } from "gatsby"
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../actions/getToken"
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  /* body {
+    background-color: #35363A;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;   
+  } */
+`;
 
   const Index = () => {
     const dispatch = useDispatch();
@@ -41,7 +51,10 @@ import { getToken } from "../actions/getToken"
     }
   
     return (
-      <App />
+      <>
+        <GlobalStyle />
+        <App />
+      </>
     )
   }
 

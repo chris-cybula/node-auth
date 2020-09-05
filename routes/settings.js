@@ -78,31 +78,35 @@ router.post('/email', verify, async (req, res) => {
 router.post('/password', verify, async (req, res) => {
 
     const data = await User.find( { _id: req.user });
-
-    //old
-
-    if(req.body[1].oldPassword === '') return res.status(400).send("Old pass empty");
-
-    const validPass = await bcrypt.compare(req.body[1].oldPassword, data[0].password);
-    if(!validPass) return res.status(400).send("Wrong old pass");
-
-
-    //new
+    const validPass = await bcrypt.compare(req.body[1].oldPassword, data[0].password)
+    let errors = null
+    let oldPassword = null
+    let newPassword = null
+    let confirmedPassword = null
 
     const { error } = changePasswordValidation({
-        newPassword: req.body[1].newPassword,
-        confirmedPassword: req.body[1].confirmedPassword
+      oldPassword: req.body[1].oldPassword,
+      newPassword: req.body[1].newPassword,
+      confirmedPassword: req.body[1].confirmedPassword
     });
 
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) {
+      errors = error.details
+    }
 
-    //confirmed
+     if(req.body[1].oldPassword !== '' && !validPass) {
+      oldPassword = false
+    }
+    
+    if(req.body[1].newPassword !== '' && req.body[1].oldPassword === req.body[1].newPassword) {
+      newPassword = false
+    }
 
-    if(req.body[1].newPassword !== req.body[1].confirmedPassword) return res.status(400).send("Passwords are not the same");
+    if(req.body[1].confirmedPassword !== '' && req.body[1].newPassword !== req.body[1].confirmedPassword) {
+      confirmedPassword = false
+    }
 
-    //update
-
-    if(req.body[1].oldPassword === req.body[1].newPassword) return res.status(400).send("New pass is the same");
+    if (error || newPassword === false || oldPassword === false || confirmedPassword === false) return res.status(400).send({errors: errors, oldPassword: oldPassword, newPassword: newPassword, confirmedPassword: confirmedPassword});
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body[1].newPassword, salt);
@@ -115,6 +119,19 @@ router.post('/password', verify, async (req, res) => {
       }
 
     res.send('ok')
+
+});
+
+router.post('/delete', verify, async (req, res) => {
+
+  let nameOrEmail = null
+
+  const user = await User.findOne({$or: [{email: req.body.nameOrEmail}, {name : req.body.nameOrEmail}]});
+    if (!user) {
+      nameOrEmail = false
+    }
+
+  res.json({user: nameOrEmail});
 
 });
 

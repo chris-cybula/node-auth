@@ -131,6 +131,8 @@ router.post('/delete', verify, async (req, res) => {
       nameOrEmail = false
     }
 
+    console.log(req.body)
+
   res.json({user: nameOrEmail});
 
 });

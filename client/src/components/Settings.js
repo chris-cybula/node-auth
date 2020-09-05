@@ -49,6 +49,13 @@ const Settings = ({userData, updateData}) => {
     }
   )
 
+  const [deleteData, setDeleteData] = useState(
+    {   
+        nameOrEmail: "",
+        verification: "",
+    }
+  )
+
   const changeName = async () => {
 
     let nameErrorMsg = '';
@@ -154,7 +161,7 @@ const Settings = ({userData, updateData}) => {
         await axios({
           method: 'post',
           url: 'http://localhost:3000/api/settings/password',
-          data: [userData._id, settingsData],
+          data: userData._id,
         //   headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
             headers: { 'auth-token': authToken.token }
         })
@@ -229,10 +236,9 @@ const Settings = ({userData, updateData}) => {
       await axios({
         method: 'post',
         url: 'http://localhost:3000/api/settings/delete',
+        data: [userData._id, deleteData],
         headers: { 'auth-token': authToken.token }
       })
-
-     console.log('delete')
     
     } catch (error) {
       alert(JSON.stringify(error))
@@ -270,9 +276,9 @@ const Settings = ({userData, updateData}) => {
           </div>
           <div>
             <p>Delete account</p>
-              <input placeholder="Your username or email" />
+              <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
               <ValidationMsg>error</ValidationMsg>
-              <input placeholder="delete my account" />
+              <input placeholder="delete my account" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
               <ValidationMsg>error</ValidationMsg>
               <button onClick={deleteAccount}>Delete</button> 
           </div>

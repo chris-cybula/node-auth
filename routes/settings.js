@@ -134,16 +134,19 @@ router.post('/delete', verify, async (req, res) => {
     errors = error.details
   }
 
-  if(req.body[1].nameOrEmail !== '' && req.body[1].nameOrEmail !== user[0].name) {
-    nameOrEmail = false
+  if(req.body[1].nameOrEmail !== '' && req.body[1].nameOrEmail === user[0].name) {
+    nameOrEmail = true
+  }
+
+  if(req.body[1].nameOrEmail !== '' && req.body[1].nameOrEmail === user[0].email) {
+    nameOrEmail = true
   }
 
   if(req.body[1].verification !== '' && req.body[1].verification !== 'delete my account') {
     verification = false
   }
 
-  if (error || nameOrEmail === false || verification === false) return res.status(400).send({errors: errors, nameOrEmail: nameOrEmail, verification: verification});
-
+  if (error || nameOrEmail !== true || verification === false) return res.status(400).send({errors: errors, nameOrEmail: nameOrEmail, verification: verification});
 
   await User.deleteOne({ _id: req.body[0] })
   res.clearCookie("user");

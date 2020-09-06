@@ -256,8 +256,10 @@ const Settings = ({userData, updateData}) => {
       alert('Account has been deleted')
     
     } catch (error) {
+
+      console.log('error', error.response.data)
       
-      if(error.response.data.nameOrEmail === false) {
+      if(error.response.data.nameOrEmail !== true) {
         nameOrEmailMsg = "Wrong name or Email"
       }
 

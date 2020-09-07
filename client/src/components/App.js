@@ -5,39 +5,36 @@ import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Layout from "../components/Layout.js"
 import Settings from "../components/Settings.js"
+import { Link, useStaticQuery, graphql } from "gatsby"
+import { getUserData } from "../actions/getUserData"
 
 const App = () => {
+  const authToken = useSelector((state) => state.authToken);
   const [item, setItem] = useState()
   const [listItems, setListItem] = useState([])
-  const [userData, setUserData] = useState([])
-  const authToken = useSelector((state) => state.authToken);
+
+  const dispatch = useDispatch();
+
+
+  // const [userData, setUserData] = useState([])
+
 
   useEffect(() => {
-    // userAuth()
     getData()
   }, [authToken])
 
-  // const userAuth = () => {
-  //   if (authToken === null && window.location.pathname !== "/login") {
-  //     navigate("/login")
-  //     return
-  //   }
-  // }
-  
   const getData = async () => {
 
     if(authToken) {
       const userData = await axios.get("http://localhost:3000", {
         headers: {
           'auth-token': authToken.token
-          // 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjIyZTAwNDRkM2M4ZmU1NTc1YzE5OTYiLCJpYXQiOjE1OTYxMjEzMjN9.wEQF3I4CCuE_hFUEr1ooJgmj-3PiIxO7YIEhdOBaDgI'
         }
       });
 
       setListItem(userData.data[0].data)
-      setUserData(userData.data[0])
-      console.log(userData.data[0])
 
+      dispatch(getUserData(userData.data[0]))
     }
   }
 
@@ -71,18 +68,19 @@ const App = () => {
     }
   }
 
-  const updateData = (updatedItem, item) => {
+  // const updateData = (updatedItem, item) => {
     
-    setUserData({...userData, [updatedItem]: item})
+  //   setUserData({...userData, [updatedItem]: item})
     
-  }
+  // }
 
   const renderApp = () => {
     if(authToken !== null) {
       return (
         <Layout link={"Settings"} location="/settings" title={"App"}>
+          <Link>Logout</Link>
 
-          <Settings userData={userData} updateData={updateData}/>
+          {/* <Settings userData={userData} updateData={updateData}/> */}
 
           <h1>App</h1>
           <input onChange={event => setItem(event.target.value)} />

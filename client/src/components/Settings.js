@@ -18,6 +18,7 @@ const ValidationMsg = styled.p`
 const Settings = ({userData, updateData}) => {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.authToken);
+  console.log('userData', userData)
 
   const [settingsData, setSettingsData] = useState(
     {   

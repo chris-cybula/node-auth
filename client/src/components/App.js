@@ -4,9 +4,10 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Layout from "../components/Layout.js"
-import Settings from "../components/Settings.js"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { getUserData } from "../actions/getUserData"
+import { getToken } from "../actions/getToken"
+
 
 const App = () => {
   const authToken = useSelector((state) => state.authToken);
@@ -74,13 +75,34 @@ const App = () => {
     setUserData({...userData, [updatedItem]: item})
     
   }
+
+  const logout = async () => {
+
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/user/clear-cookie',
+      })
+      
+     console.log('cookie removed')
+    
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
+
+    dispatch(getToken(null))
+    navigate("/login")
+    alert('logout')
+  }
+
   console.log('yoo!', userData)
 
   const renderApp = () => {
     if(authToken !== null) {
       return (
         <Layout link={"Settings"} location="/settings" title={"App"}>
-          <Link>Logout</Link>
+          <a onClick={logout}>Logout</a>
+          {/* <button onClick={logout}>Logout</button>  */}
 
           {/* <Settings userData={userData} updateData={updateData}/> */}
           

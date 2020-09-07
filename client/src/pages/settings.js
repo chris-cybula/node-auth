@@ -95,7 +95,6 @@ const SettingsPage = () => {
           nameErrorMsg = 'Name already exist' 
         }
 
-        setNameError(nameErrorMsg)
       }
   }
 
@@ -221,25 +220,6 @@ const SettingsPage = () => {
       }
   }
 
-  const logout = async () => {
-
-    try {
-      await axios({
-        method: 'post',
-        url: 'http://localhost:3000/api/user/clear-cookie',
-      })
-      
-     console.log('cookie removed')
-    
-    } catch (error) {
-      alert(JSON.stringify(error))
-    }
-
-    dispatch(getToken(null))
-    navigate("/login")
-    alert('logout')
-  }
-
   const deleteAccount = async () => {
 
     let nameOrEmailMsg = null;
@@ -286,45 +266,44 @@ const SettingsPage = () => {
   }
 
   return (
-    <>
+    <Layout link={"Back"} location="/" title={"Settings"}>
+
       <h1>User settings</h1>
-          <div>
-            <p>Change username - <strong>{userDetails['userData'].name}</strong></p>
-              <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
-              <ValidationMsg>{nameError}</ValidationMsg>
-              <button onClick={changeName}>Change username</button> 
-          </div>
-          <div>
-            <p>Change email - <strong>{userDetails['userData'].email}</strong></p>
-              <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
-              <ValidationMsg>{emailError.oldEmailError}</ValidationMsg>
-              <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
-              <ValidationMsg>{emailError.newEmailError}</ValidationMsg>
-              <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
-              <ValidationMsg>{emailError.confirmedEmailError}</ValidationMsg>
-              <button onClick={changeEmail}>Change email</button> 
-          </div>
-          <div>
-            <p>Change password</p>
-              <input placeholder="Old password" onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
-              <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
-              <input placeholder="New password" onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
-              <ValidationMsg>{passwordError.newPasswordError}</ValidationMsg>
-              <input placeholder="Confirm new password" onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
-              <ValidationMsg>{passwordError.confirmedPasswordError}</ValidationMsg>
-              <button onClick={changePassword}>Change password</button> 
-          </div>
-          <div>
-            <p>Delete account</p>
-              <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
-              <ValidationMsg>{deleteError. nameOrEmailError}</ValidationMsg>
-              <input placeholder="delete my account" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
-              <ValidationMsg>{deleteError.verificationError}</ValidationMsg>
-              <button onClick={deleteAccount}>Delete</button> 
-          </div>
-          <p>Logout</p>
-          <button onClick={logout}>Logout</button> 
-    </>
+      <div>
+        <p>Change username - <strong>{userDetails['userData'].name}</strong></p>
+        <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
+        <ValidationMsg>{nameError}</ValidationMsg>
+        <button onClick={changeName}>Change username</button> 
+      </div>
+      <div>
+        <p>Change email - <strong>{userDetails['userData'].email}</strong></p>
+        <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
+        <ValidationMsg>{emailError.oldEmailError}</ValidationMsg>
+        <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
+        <ValidationMsg>{emailError.newEmailError}</ValidationMsg>
+        <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
+        <ValidationMsg>{emailError.confirmedEmailError}</ValidationMsg>
+        <button onClick={changeEmail}>Change email</button> 
+      </div>
+      <div>
+        <p>Change password</p>
+        <input placeholder="Old password" onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
+        <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
+        <input placeholder="New password" onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
+        <ValidationMsg>{passwordError.newPasswordError}</ValidationMsg>
+        <input placeholder="Confirm new password" onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
+        <ValidationMsg>{passwordError.confirmedPasswordError}</ValidationMsg>
+        <button onClick={changePassword}>Change password</button> 
+      </div>
+      <div>
+        <p>Delete account</p>
+        <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
+        <ValidationMsg>{deleteError. nameOrEmailError}</ValidationMsg>
+        <input placeholder="delete my account" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
+        <ValidationMsg>{deleteError.verificationError}</ValidationMsg>
+        <button onClick={deleteAccount}>Delete</button> 
+      </div>
+    </Layout>
   )
 }
 

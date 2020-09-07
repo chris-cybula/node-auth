@@ -17,6 +17,8 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     color: white;
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 

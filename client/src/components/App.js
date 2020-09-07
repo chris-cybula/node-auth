@@ -16,7 +16,7 @@ const App = () => {
   const dispatch = useDispatch();
 
 
-  // const [userData, setUserData] = useState([])
+  const [userData, setUserData] = useState([])
 
 
   useEffect(() => {
@@ -33,6 +33,7 @@ const App = () => {
       });
 
       setListItem(userData.data[0].data)
+      setUserData(userData.data[0])
 
       dispatch(getUserData(userData.data[0]))
     }
@@ -68,11 +69,12 @@ const App = () => {
     }
   }
 
-  // const updateData = (updatedItem, item) => {
+  const updateData = (updatedItem, item) => {
     
-  //   setUserData({...userData, [updatedItem]: item})
+    setUserData({...userData, [updatedItem]: item})
     
-  // }
+  }
+  console.log('yoo!', userData)
 
   const renderApp = () => {
     if(authToken !== null) {
@@ -81,6 +83,7 @@ const App = () => {
           <Link>Logout</Link>
 
           {/* <Settings userData={userData} updateData={updateData}/> */}
+          
 
           <h1>App</h1>
           <input onChange={event => setItem(event.target.value)} />

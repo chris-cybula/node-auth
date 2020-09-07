@@ -24,7 +24,7 @@ export const wrapRootElement = ({ element }) => {
   return (
     <>
       <Helmet>
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet"/>
       </Helmet>
       <GlobalStyle />
       <Provider store={store}>{element}</Provider>

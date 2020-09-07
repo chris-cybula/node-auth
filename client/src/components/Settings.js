@@ -287,13 +287,13 @@ const Settings = ({userData, updateData}) => {
     <>
       <h1>User settings</h1>
           <div>
-            <p>Change username - {userData.name}</p>
+            <p>Change username - <strong>{userData.name}</strong></p>
               <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
               <ValidationMsg>{nameError}</ValidationMsg>
               <button onClick={changeName}>Change username</button> 
           </div>
           <div>
-            <p>Change email - {userData.email}</p>
+            <p>Change email - <strong>{userData.email}</strong></p>
               <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
               <ValidationMsg>{emailError.oldEmailError}</ValidationMsg>
               <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
@@ -303,7 +303,7 @@ const Settings = ({userData, updateData}) => {
               <button onClick={changeEmail}>Change email</button> 
           </div>
           <div>
-            <p>Change password - {userData.password}</p>
+            <p>Change password</p>
               <input placeholder="Old password" onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
               <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
               <input placeholder="New password" onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>

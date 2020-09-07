@@ -80,7 +80,7 @@ const App = () => {
   const renderApp = () => {
     if(authToken !== null) {
       return (
-        <Layout link={"Page"} location="/page" title={"Index"}>
+        <Layout link={"Settings"} location="/settings" title={"App"}>
 
           <Settings userData={userData} updateData={updateData}/>
 

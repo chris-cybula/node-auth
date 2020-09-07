@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 // import { graphql } from "gatsby"
 
-const Page = () => {
+const SettingsPage = () => {
   const [login, setLogin] = useState()
   const [repos, setRepos] = useState([])
 
@@ -28,7 +28,7 @@ const Page = () => {
   // }
 
   return (
-    <Layout link={"Index"} location={"/"} title={"Page"}>
+    <Layout link={"Back"} location={"/"} title={"Settings"}>
       <h1>{login}</h1>
       {repos.map((repo, i) => {
         return (
@@ -41,4 +41,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default SettingsPage

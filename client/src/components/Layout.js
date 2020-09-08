@@ -6,7 +6,19 @@ import { Helmet } from "react-helmet"
 const FooterWrapper = styled.div`
   background-color: black;
   color: white;
-  margin: 20px 0;
+  margin-top: auto;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 `
 
 const Layout = ({ link, location, title, children }) => {
@@ -23,14 +35,13 @@ const Layout = ({ link, location, title, children }) => {
   )
 
   return (
-    <>
+    <Container>
       <Helmet title={`${title} | ${site.siteMetadata.title}`} />
-      <Link to={location}>{link}</Link>
       <main>{children}</main>
       <FooterWrapper>
         <span>© {new Date().getFullYear()}</span>
       </FooterWrapper>
-    </>
+    </Container>
   )
 }
 

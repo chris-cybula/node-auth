@@ -11,14 +11,13 @@ const GlobalStyle = createGlobalStyle`
     color: white;
     font-family: 'Lato', sans-serif;
     font-weight: 300;   
+    margin: 0;
     /* display: flex;
     justify-content: center; */
   }
 
   a {
     color: white;
-    text-decoration: underline;
-    cursor: pointer;
   }
 `;
 

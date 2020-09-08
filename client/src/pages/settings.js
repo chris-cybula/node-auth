@@ -266,8 +266,9 @@ const SettingsPage = () => {
   }
 
   return (
-    <Layout link={"Back"} location="/" title={"Settings"}>
+    <Layout title={"Settings"}>
 
+      <Link to="/">Back</Link>
       <h1>User settings</h1>
       <div>
         <p>Change username - <strong>{userDetails['userData'].name}</strong></p>

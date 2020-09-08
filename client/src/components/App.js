@@ -7,7 +7,29 @@ import Layout from "../components/Layout.js"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { getUserData } from "../actions/getUserData"
 import { getToken } from "../actions/getToken"
+import styled from "styled-components"
 
+const LogoutButton = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+`
+const DeleteButton = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 20px;
+`
+const ItemWrapper = styled.div`
+  display: flex;
+  margin: 20px 0;
+`
+
+const NavWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+`
 
 const App = () => {
   const authToken = useSelector((state) => state.authToken);
@@ -100,23 +122,23 @@ const App = () => {
   const renderApp = () => {
     if(authToken !== null) {
       return (
-        <Layout link={"Settings"} location="/settings" title={"App"}>
-          <a onClick={logout}>Logout</a>
-          {/* <button onClick={logout}>Logout</button>  */}
-
-          {/* <Settings userData={userData} updateData={updateData}/> */}
+        <Layout title={"App"}>
+          <NavWrapper>
+            <Link to="/settings">Settings</Link>
+            <LogoutButton onClick={logout}>Logout</LogoutButton>
+          </NavWrapper>
           
 
-          <h1>App</h1>
+          <h1 style={{textAlign: 'center'}}>App</h1>
           <input onChange={event => setItem(event.target.value)} />
           <button onClick={addItem}>Add</button>
     
           {listItems.map((item, i) => {
             return (
-              <div key={i}>
+              <ItemWrapper key={i}>
                 <li>{item}</li>
-                <button onClick={deleteItem}>Delete</button>
-              </div>
+                <DeleteButton onClick={deleteItem}>Delete</DeleteButton>
+              </ItemWrapper>
             )
           })}
         </Layout>

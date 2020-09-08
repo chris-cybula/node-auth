@@ -14,6 +14,13 @@ const ValidationMsg = styled.p`
   height: 17px;
 `
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
 const Login = () => {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.authToken);
@@ -217,39 +224,39 @@ const handleMail = async () => {
   if( isLogged === false) {
 
   return (
-    <>
-    <h1>Login</h1>
-    <div>
-    <p>Register</p>
-    <div>
-      <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
-      <ValidationMsg>{registerErrors.name}</ValidationMsg>
-    </div>
-    <div>
-      <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
-      <ValidationMsg>{registerErrors.email}</ValidationMsg>
-    </div>
-    <div>
-      <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
-      <ValidationMsg>{registerErrors.password}</ValidationMsg>
-    </div>
-        <button onClick={handleRegister}>Register</button> 
-    </div>
-    <div>
-       <p>Login</p>
-        <input placeholder="username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
-        <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
-        <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
-        <ValidationMsg>{loginErrors.password}</ValidationMsg>
-        <button onClick={handleLogin}>Login</button> 
-    </div>
-    <div>
-       <p>Reset password</p>
-        <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
-        <ValidationMsg>{resetEmailError.emailError}</ValidationMsg>
-        <button onClick={handleMail}>Send password reset email</button> 
-    </div>
-    </>
+    <Container>
+      <h1>Login</h1>
+      <div>
+      <p>Register</p>
+      <div>
+        <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
+        <ValidationMsg>{registerErrors.name}</ValidationMsg>
+      </div>
+      <div>
+        <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
+        <ValidationMsg>{registerErrors.email}</ValidationMsg>
+      </div>
+      <div>
+        <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
+        <ValidationMsg>{registerErrors.password}</ValidationMsg>
+      </div>
+          <button onClick={handleRegister}>Register</button> 
+      </div>
+      <div>
+        <p>Login</p>
+          <input placeholder="username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
+          <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
+          <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
+          <ValidationMsg>{loginErrors.password}</ValidationMsg>
+          <button onClick={handleLogin}>Login</button> 
+      </div>
+      <div>
+        <p>Reset password</p>
+          <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
+          <ValidationMsg>{resetEmailError.emailError}</ValidationMsg>
+          <button onClick={handleMail}>Send email</button> 
+      </div>
+    </Container>
   )
   } else {
     return (

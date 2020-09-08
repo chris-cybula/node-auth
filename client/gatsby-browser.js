@@ -12,12 +12,34 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Lato', sans-serif;
     font-weight: 300;   
     margin: 0;
-    /* display: flex;
-    justify-content: center; */
   }
 
   a {
     color: white;
+  }
+
+  input {
+    width: 280px;
+    height: 32px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    padding: 0 10px;
+  }
+
+  button {
+    border: none;
+    outline: none;
+    height: 32px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    background-color: #8DCBF5;
+    padding: 0 10px;
+  }
+
+  button:hover {
+    opacity: .9;
   }
 `;
 
@@ -25,7 +47,7 @@ export const wrapRootElement = ({ element }) => {
   return (
     <>
       <Helmet>
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
       </Helmet>
       <GlobalStyle />
       <Provider store={store}>{element}</Provider>

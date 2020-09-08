@@ -15,9 +15,9 @@ const FooterWrapper = styled.div`
 `
 
 const Container = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
   min-height: 100vh;
 `
 

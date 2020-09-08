@@ -10,8 +10,9 @@ const ValidationMsg = styled.p`
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 14px;
-  color: red;
-  height: 17px;
+  color: #DD2E40;
+  height: 25px;
+  font-weight: 400;
 `
 
 const Container = styled.div`

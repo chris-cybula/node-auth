@@ -15,10 +15,14 @@ const FooterWrapper = styled.div`
 `
 
 const Container = styled.div`
-  /* display: flex;
+  display: flex;
   flex-direction: column;
-  align-items: center; */
-  min-height: 100vh;
+  align-items: center;
+  min-height: calc(100vh - 16px);
+`
+
+const Main = styled.div`
+  width: 100%;
 `
 
 const Layout = ({ link, location, title, children }) => {
@@ -37,7 +41,7 @@ const Layout = ({ link, location, title, children }) => {
   return (
     <Container>
       <Helmet title={`${title} | ${site.siteMetadata.title}`} />
-      <main>{children}</main>
+      <Main>{children}</Main>
       <FooterWrapper>
         <span>© {new Date().getFullYear()}</span>
       </FooterWrapper>

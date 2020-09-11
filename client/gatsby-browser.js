@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
     color: white;
     font-family: 'Lato', sans-serif;
     font-weight: 300;   
-    margin: 0;
   }
 
   a {
@@ -23,8 +22,12 @@ const GlobalStyle = createGlobalStyle`
     height: 32px;
     border-radius: 5px;
     border: none;
-    font-size: 16px;
+    font-size: 14px;
     padding: 0 10px;
+  }
+
+  input:focus {
+    outline: none;
   }
 
   button {
@@ -33,9 +36,10 @@ const GlobalStyle = createGlobalStyle`
     height: 32px;
     border-radius: 5px;
     cursor: pointer;
-    width: 120px;
+    width: 300px;
     background-color: #8DCBF5;
     padding: 0 10px;
+    margin-bottom: 20px;
   }
 
   button:hover {

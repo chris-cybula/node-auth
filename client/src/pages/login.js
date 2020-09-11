@@ -11,7 +11,7 @@ const ValidationMsg = styled.p`
   margin-bottom: 5px;
   font-size: 14px;
   color: #DD2E40;
-  height: 25px;
+  height: 20px;
   font-weight: 400;
 `
 

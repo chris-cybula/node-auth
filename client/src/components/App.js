@@ -15,20 +15,46 @@ const LogoutButton = styled.span`
   display: block;
   text-align: center;
 `
-const DeleteButton = styled.span`
-  text-decoration: underline;
+
+const DeleteButton = styled.div`
   cursor: pointer;
-  margin-left: 20px;
+  display: flex;
+  align-items: center;
 `
+
+const TextWrapper = styled.div`
+  width: calc(100% - 24px);
+  overflow-wrap: break-word;
+`
+
 const ItemWrapper = styled.div`
   display: flex;
-  margin: 20px 0;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  border-bottom: 1px solid white;
+  margin-bottom: 20px;
 `
 
 const NavWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   margin-top: 10px;
+  justify-content: flex-end;
+  width: 100%;
+`
+
+const InputWrapper = styled.div`
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
+
+const DeleteIcon = styled.svg`
+  fill: white;
+  pointer-events: none;
 `
 
 const App = () => {
@@ -61,8 +87,6 @@ const App = () => {
       dispatch(getUserData(userData.data[0]))
     }
   }
-
-  
 
   const addItem = async () => {
 
@@ -125,19 +149,27 @@ const App = () => {
         <Layout title={"App"}>
           <NavWrapper>
             <Link to="/settings">Settings</Link>
-            <LogoutButton onClick={logout}>Logout</LogoutButton>
+            <LogoutButton onClick={logout} style={{marginLeft: '10px'}}>Logout</LogoutButton>
           </NavWrapper>
           
-
           <h1 style={{textAlign: 'center'}}>App</h1>
-          <input onChange={event => setItem(event.target.value)} />
-          <button onClick={addItem}>Add</button>
+
+          <InputWrapper>
+            <input onChange={event => setItem(event.target.value)} />
+            <button onClick={addItem} style={{marginTop: '25px'}}>Add</button>
+          </InputWrapper>
     
           {listItems.map((item, i) => {
             return (
               <ItemWrapper key={i}>
-                <li>{item}</li>
-                <DeleteButton onClick={deleteItem}>Delete</DeleteButton>
+                <TextWrapper>
+                  <span>{item}</span>
+                </TextWrapper>
+                <DeleteButton onClick={deleteItem}>
+                  <DeleteIcon height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                  </DeleteIcon>
+                </DeleteButton>
               </ItemWrapper>
             )
           })}

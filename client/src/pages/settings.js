@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { getToken } from "../actions/getToken"
 import { Link, navigate } from "gatsby"
 import styled from "styled-components"
+import { getUserData } from "../actions/getUserData"
 
 const ValidationMsg = styled.p`
   margin-top: 0;
@@ -100,18 +101,19 @@ const SettingsPage = () => {
     
         alert('Name changed')
 
-        // updateData('name', settingsData.newName)
+        dispatch(getUserData({...userDetails['userData'], name: settingsData.newName}))
       
       } catch (error) {
 
         if(error.response.data.errors) {
           nameErrorMsg = error.response.data.errors[0].message
-          console.log(nameErrorMsg)
         }
     
         if(error.response.data.errors === null && error.response.data.name === true) {
           nameErrorMsg = 'Name already exist' 
         }
+
+        setNameError(nameErrorMsg)
 
       }
   }

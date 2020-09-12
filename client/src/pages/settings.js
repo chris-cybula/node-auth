@@ -106,11 +106,14 @@ const SettingsPage = () => {
 
         if(error.response.data.errors) {
           nameErrorMsg = error.response.data.errors[0].message
+          console.log(nameErrorMsg)
         }
     
         if(error.response.data.errors === null && error.response.data.name === true) {
           nameErrorMsg = 'Name already exist' 
         }
+
+      }
   }
 
   const changeEmail = async () => {

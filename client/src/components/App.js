@@ -103,7 +103,8 @@ const App = () => {
 
   const deleteItem = async e => {
     
-    const removedItem = e.target.parentElement.firstChild.innerHTML
+    const removedItem = e.target.parentElement.firstChild.firstChild.innerHTML
+    console.log(removedItem)
     
     if(authToken) {
     await axios.delete(`http://localhost:3000/${removedItem}`, {

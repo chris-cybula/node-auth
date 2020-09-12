@@ -4,7 +4,6 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 
 const FooterWrapper = styled.div`
-  background-color: black;
   color: white;
   margin-top: auto;
   width: 100%;

@@ -84,6 +84,8 @@ router.post('/password', verify, async (req, res) => {
     let newPassword = null
     let confirmedPassword = null
 
+    console.log(req.body)
+
     const { error } = changePasswordValidation({
       oldPassword: req.body[1].oldPassword,
       newPassword: req.body[1].newPassword,

@@ -134,7 +134,7 @@ const SettingsPage = () => {
     
         alert('Email changed')
 
-        // updateData('email', settingsData.newEmail)
+        dispatch(getUserData({...userDetails['userData'], email: settingsData.newEmail}))
 
         setEmailError({
           oldEmailError: null,
@@ -189,7 +189,7 @@ const SettingsPage = () => {
         await axios({
           method: 'post',
           url: 'http://localhost:3000/api/settings/password',
-          data: userDetails['userData']._id,
+          data: [userDetails['userData']._id, settingsData],
         //   headers: {'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE5NzcwNzNhNGFkNTIzNWQxNmNkZDciLCJpYXQiOjE1OTYwMTk1NTd9.5FGbHMIeSek5DnI4hGzQRO47dyp0k_aJ-eIInvNQgk0'}
             headers: { 'auth-token': authToken.token }
         })
@@ -206,7 +206,6 @@ const SettingsPage = () => {
       
       } catch (error) {
         // alert(JSON.stringify(error.response.data))
-        console.log(error.response.data)
 
         if(error.response.data.oldPassword === false) {
           oldPasswordMsg = "Wrong old password"

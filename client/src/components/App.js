@@ -57,15 +57,30 @@ const DeleteIcon = styled.svg`
   pointer-events: none;
 `
 
+const ValidationMsg = styled.p`
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #E13247;
+  height: 20px;
+  font-weight: 400;
+`
+
 const App = () => {
   const authToken = useSelector((state) => state.authToken);
-  const [item, setItem] = useState()
-  const [listItems, setListItem] = useState([])
-
   const dispatch = useDispatch();
+  
+  const [listItems, setListItem] = useState([])
+  // const [item, setItem] = useState()
 
+  const [item, setItem] = useState(
+    { 
+      item: "",
+    }
+  )
 
   const [userData, setUserData] = useState([])
+  const [appError, setAppError] = useState()
 
 
   useEffect(() => {
@@ -90,15 +105,38 @@ const App = () => {
 
   const addItem = async () => {
 
-    if(authToken) {
-      await axios.post("http://localhost:3000", { item: item }, {
-        headers: {
-          'auth-token': authToken.token
-        }
-      });
+    
+      // await axios.post("http://localhost:3000", { item: item }, {
+      //   headers: {
+      //     'auth-token': authToken.token
+      //   }
+      // });
       
-      setListItem([...listItems, item])
-    }
+      // setListItem([...listItems, item])
+
+      try {
+        await axios({
+          method: 'post',
+          url: 'http://localhost:3000',
+          data: item,
+          headers: { 'auth-token': authToken.token }
+        })
+
+        setListItem([...listItems, item])      
+      
+      } catch (error) {
+        
+        let appErrorMsg = ""
+
+        if(error.response.data.errors) {
+          appErrorMsg = error.response.data.errors[0].message
+        }
+
+        setAppError(appErrorMsg)
+      }
+
+
+      
   }
 
   const deleteItem = async e => {
@@ -156,8 +194,9 @@ const App = () => {
           <h1 style={{textAlign: 'center'}}>App</h1>
 
           <InputWrapper>
-            <input onChange={event => setItem(event.target.value)} />
-            <button onClick={addItem} style={{marginTop: '25px'}}>Add</button>
+            <input onChange={e => setItem({...item, item: e.target.value})} />
+            <ValidationMsg>{appError}</ValidationMsg>
+            <button onClick={addItem}>Add</button>
           </InputWrapper>
     
           {listItems.map((item, i) => {

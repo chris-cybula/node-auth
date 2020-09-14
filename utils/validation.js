@@ -242,6 +242,24 @@ const deleteValidation = (data) => {
   return schema.validate(data);
 };
 
+const appValidation = (data) => {
+  const schema = Joi.object({
+    item: Joi.string()
+    .error(errors => {
+      errors.forEach(err => {
+        switch (err.code) {
+          case "string.empty":
+            err.message = "Value should not be empty!!!";
+          break;
+        }
+      });
+      return errors;
+    }),
+  }).options({abortEarly : false});
+
+  return schema.validate(data);
+};
+
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
@@ -250,6 +268,7 @@ module.exports.changeNameValidation = changeNameValidation;
 module.exports.changeEmailValidation = changeEmailValidation;
 module.exports.changePasswordValidation = changePasswordValidation;
 module.exports.deleteValidation = deleteValidation;
+module.exports.appValidation = appValidation;
 
 
 

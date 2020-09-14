@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const verify = require('../utils/verifyToken')
+const { appValidation } = require("../utils/validation.js");
+
 
 //import schema
 const Item = require("../models/Item");
@@ -19,6 +21,19 @@ router.get("/", verify, async (req, res) => {
 
 //post data
 router.post("/", verify, async (req, res) => {
+
+  let errors = null
+
+  console.log(req.body)
+
+  const { error } = appValidation(req.body);
+  if (error) {
+    errors = error.details
+  }
+
+  console.log('req', req.body)
+
+  if (error) return res.status(400).send({errors: errors});
 
   try {
     User.findByIdAndUpdate(req.user, { $push: { data: req.body.item } }).exec();

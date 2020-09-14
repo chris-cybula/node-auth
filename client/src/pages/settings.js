@@ -38,9 +38,6 @@ const SettingsPage = () => {
   const authToken = useSelector((state) => state.authToken);
   const userDetails = useSelector((state) => state.userDetails);
 
-  console.log(userDetails['userData'])
-  
-
   const [settingsData, setSettingsData] = useState(
     {   
         oldEmail: "",
@@ -84,6 +81,11 @@ const SettingsPage = () => {
         verificationError: "",
     }
   )
+
+  useEffect(() => {
+    
+    
+  }, [])
 
   const changeName = async () => {
 

@@ -122,7 +122,7 @@ const App = () => {
           headers: { 'auth-token': authToken.token }
         })
 
-        setListItem([...listItems, item])      
+        setListItem([...listItems, item['item']])      
       
       } catch (error) {
         

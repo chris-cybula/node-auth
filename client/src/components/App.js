@@ -48,8 +48,8 @@ const InputWrapper = styled.div`
   display: flex;
   margin-top: 10px;
   flex-direction: column;
-  align-items: center;
   width: 100%;
+  align-items: center;
 `
 
 const DeleteIcon = styled.svg`
@@ -105,15 +105,6 @@ const App = () => {
 
   const addItem = async () => {
 
-    
-      // await axios.post("http://localhost:3000", { item: item }, {
-      //   headers: {
-      //     'auth-token': authToken.token
-      //   }
-      // });
-      
-      // setListItem([...listItems, item])
-
       try {
         await axios({
           method: 'post',
@@ -132,11 +123,12 @@ const App = () => {
           appErrorMsg = error.response.data.errors[0].message
         }
 
+        if(error.response.data.itemExists) {
+          appErrorMsg = "Item already exists"
+        }
+
         setAppError(appErrorMsg)
       }
-
-
-      
   }
 
   const deleteItem = async e => {
@@ -194,9 +186,11 @@ const App = () => {
           <h1 style={{textAlign: 'center'}}>App</h1>
 
           <InputWrapper>
-            <input onChange={e => setItem({...item, item: e.target.value})} />
-            <ValidationMsg>{appError}</ValidationMsg>
-            <button onClick={addItem}>Add</button>
+            <div>
+              <input onChange={e => setItem({...item, item: e.target.value})} />
+              <ValidationMsg>{appError}</ValidationMsg>
+              <button onClick={addItem}>Add</button>
+            </div>
           </InputWrapper>
     
           {listItems.map((item, i) => {

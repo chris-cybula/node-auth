@@ -23,17 +23,20 @@ router.get("/", verify, async (req, res) => {
 router.post("/", verify, async (req, res) => {
 
   let errors = null
-
-  console.log(req.body)
+  let itemExists = null
 
   const { error } = appValidation(req.body);
   if (error) {
     errors = error.details
   }
 
-  console.log('req', req.body)
+  const user = await User.find({ _id: req.user })
 
-  if (error) return res.status(400).send({errors: errors});
+  if(user[0]['data'].includes(req.body.item) === true ) {
+    itemExists = true
+  }
+
+  if (error || itemExists === true) return res.status(400).send({errors: errors, itemExists: itemExists});
 
   try {
     User.findByIdAndUpdate(req.user, { $push: { data: req.body.item } }).exec();

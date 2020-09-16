@@ -4,16 +4,12 @@ const registerValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string()
     .required()
-      .min(6)
       .error(errors => {
         errors.forEach(err => {
           switch (err.code) {
             case "string.empty":
-              err.message = "Value should not be empty!!!";
-              break;
-            case "string.min":
-              err.message = `Value should have at least 6 characters!!!`;
-              break;
+              err.message = "Username can't be blank";
+            break;
           }
         });
         return errors;
@@ -26,10 +22,10 @@ const registerValidation = (data) => {
         errors.forEach(err => {
           switch (err.code) {
             case "string.empty":
-              err.message = "Value should not be empty!!!";
+              err.message = "Email can't be blank";
             break;
             case "string.email":
-              err.message = `Value should be a valid email!!!`;
+              err.message = `Email is invalid`;
             break;
           }
         });
@@ -38,15 +34,15 @@ const registerValidation = (data) => {
 
     password: Joi.string()
       .required()
-      .min(6)
+      .min(8)
       .error(errors => {
         errors.forEach(err => {
           switch (err.code) {
             case "string.empty":
-              err.message = "Password should not be empty!!!";
+              err.message = "Password can't be blank";
               break;
             case "string.min":
-              err.message = `Password should have at least 6 characters!!!`;
+              err.message = `Password is too short (minimum is 8 characters)`;
             break;
           }
         });
@@ -65,7 +61,7 @@ const loginValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Can not be empty!!!";
+            err.message = "Username or email can't be blank";
             break;
         }
       });
@@ -76,7 +72,7 @@ const loginValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Can not be empty!!!";
+            err.message = "Password can't be blank";
             break;
         }
       });
@@ -95,10 +91,10 @@ const resetEmailValidation = (data) => {
         errors.forEach(err => {
           switch (err.code) {
             case "string.empty":
-              err.message = "Value should not be empty!!!";
+              err.message = "Email can't be blank";
             break;
             case "string.email":
-              err.message = `Value should be a valid email!!!`;
+              err.message = `Email is invalid`;
             break;
           }
         });

@@ -106,7 +106,7 @@ const Login = () => {
         data: registerData
       })
 
-      alert('Registered!')
+      alert('Your account has been created')
 
       setRegisterErrors({
         name: '', 
@@ -133,11 +133,11 @@ const Login = () => {
       }
 
       if(error.response.data.emailExist && error.response.data.emailExist === true) {
-        emailMsg = 'Email already exist'
+        emailMsg = 'Email is already taken'
       }
 
       if(error.response.data.nameExist && error.response.data.nameExist === true) {
-        nameMsg = 'Name already exist'
+        nameMsg = 'Username is already taken'
       }
 
       setRegisterErrors({
@@ -157,8 +157,6 @@ const handleLogin = async () => {
       data: loginData
     })
 
-    alert('Logged in!')
-
     dispatch(getToken(response.headers["auth-token"]))
     
     navigate("/")
@@ -168,11 +166,11 @@ const handleLogin = async () => {
       let passwordMsg = '';
 
       if(error.response.data.nameOrEmail === false) {
-        nameOrEmailMsg = 'Wrong name or email'
+        nameOrEmailMsg = 'Incorrect username or email'
       }
 
       if(error.response.data.password === false) {
-        passwordMsg = 'Wrong password'
+        passwordMsg = 'Incorrect password'
       }
       
       if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "nameOrEmail")) {
@@ -202,7 +200,7 @@ const handleMail = async () => {
       emailError: ''
     })
 
-    alert('Email sent')
+    alert('Email with new password has been sent')
   
   } catch (error) {
 
@@ -213,7 +211,7 @@ const handleMail = async () => {
     }
 
     if(error.response.data.errors === null && error.response.data.emailExist === false) {
-      emailErrorMsg = 'Email doesn\'t exist' 
+      emailErrorMsg = 'Incorrect email' 
     }
 
     setResetEmailError({
@@ -228,7 +226,7 @@ const handleMail = async () => {
     <Container>
       <h1>Login</h1>
       <div>
-      <p>Register</p>
+      <p>Create your account</p>
       <div>
         <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
         <ValidationMsg>{registerErrors.name}</ValidationMsg>
@@ -241,21 +239,21 @@ const handleMail = async () => {
         <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
         <ValidationMsg>{registerErrors.password}</ValidationMsg>
       </div>
-          <button onClick={handleRegister}>Register</button> 
+          <button onClick={handleRegister}>Create account</button> 
       </div>
       <div>
-        <p>Login</p>
-          <input placeholder="username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
+        <p>Sign in to App</p>
+          <input placeholder="Username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
           <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
-          <input placeholder="password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
+          <input placeholder="Password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
           <ValidationMsg>{loginErrors.password}</ValidationMsg>
-          <button onClick={handleLogin}>Login</button> 
+          <button onClick={handleLogin}>Sign in</button> 
       </div>
       <div>
-        <p>Reset password</p>
-          <input placeholder="email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
+        <p>Reset your password</p>
+          <input placeholder="Email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
           <ValidationMsg>{resetEmailError.emailError}</ValidationMsg>
-          <button onClick={handleMail}>Send email</button> 
+          <button onClick={handleMail}>Send password reset email</button> 
       </div>
     </Container>
   )

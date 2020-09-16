@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
     });
 
     let mailOptions = {
-        from: 'chris.cybula.test@gmail.com',
+        from: process.env.MAIL,
         to: 'chris.cybula.test2@gmail.com',
         subject: 'Nodemailer - Test',
         text: newPassword

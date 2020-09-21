@@ -112,7 +112,7 @@ const changeNameValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "New username can't be blank";
           break;
         }
       });
@@ -130,7 +130,7 @@ const changeEmailValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Old email can't be blank";
           break;
         }
       });
@@ -141,10 +141,10 @@ const changeEmailValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "New email can't be blank";
           break;
           case "string.email":
-              err.message = `Value should be a valid email!!!`;
+              err.message = `New email is invalid`;
           break;
         }
       });
@@ -155,7 +155,7 @@ const changeEmailValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Confirmed email can't be blank";
           break;
         }
       });
@@ -173,7 +173,7 @@ const changePasswordValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Old password can't be blank";
           break;
         }
       });
@@ -184,10 +184,10 @@ const changePasswordValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "New password can't be blank";
           break;
           case "string.min":
-              err.message = `Password should have at least 6 characters!!!`;
+              err.message = `Password is too short (minimum is 8 characters)`;
           break;
         }
       });
@@ -198,7 +198,7 @@ const changePasswordValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Confirmed password can't be blank";
           break;
         }
       });
@@ -216,7 +216,7 @@ const deleteValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Username or email can't be blank";
           break;
         }
       });
@@ -227,7 +227,7 @@ const deleteValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Username or email can't be blank";
           break;
         }
       });
@@ -245,7 +245,7 @@ const appValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Value should not be empty!!!";
+            err.message = "Item can't be blank";
           break;
         }
       });

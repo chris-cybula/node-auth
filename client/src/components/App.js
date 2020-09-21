@@ -64,9 +64,9 @@ const DeleteIcon = styled.svg`
 `
 
 const ValidationMsg = styled.p`
-  margin-top: 0;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-top: 2px;
+  margin-bottom: 3px;
+  font-size: 12px;
   color: #E13247;
   height: 20px;
   font-weight: 400;
@@ -118,7 +118,9 @@ const App = () => {
           headers: { 'auth-token': authToken.token }
         })
 
-        setListItem([...listItems, item['item']])      
+        setListItem([...listItems, item['item']])    
+        
+        setAppError("")
       
       } catch (error) {
         
@@ -192,9 +194,9 @@ const App = () => {
 
           <InputWrapper>
             <div>
-              <input onChange={e => setItem({...item, item: e.target.value})} />
+              <input placeholder="Item" onChange={e => setItem({...item, item: e.target.value})} />
               <ValidationMsg>{appError}</ValidationMsg>
-              <button onClick={addItem}>Add</button>
+              <button onClick={addItem}>Add item</button>
             </div>
           </InputWrapper>
 

@@ -9,9 +9,9 @@ import styled from "styled-components"
 import { getUserData } from "../actions/getUserData"
 
 const ValidationMsg = styled.p`
-  margin-top: 0;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-top: 2px;
+  margin-bottom: 3px;
+  font-size: 12px;
   color: #E13247;
   height: 20px;
   font-weight: 400;
@@ -112,7 +112,7 @@ const SettingsPage = () => {
         }
     
         if(error.response.data.errors === null && error.response.data.name === true) {
-          nameErrorMsg = 'Name already exist' 
+          nameErrorMsg = 'Username is already taken' 
         }
 
         setNameError(nameErrorMsg)
@@ -161,15 +161,15 @@ const SettingsPage = () => {
         }
 
         if(error.response.data.oldEmail === false) {
-          oldEmailMsg = "Wrong old email"
+          oldEmailMsg = "Incorrect email"
         }
 
         if(error.response.data.newEmail === true) {
-          newEmailMsg = "Email already exists"
+          newEmailMsg = "New email is already taken"
         }
 
         if(error.response.data.confirmedEmail === false) {
-          confirmedEmailMsg = "Emails are not the same"
+          confirmedEmailMsg = "Confirmed email doesn't match new email"
         }
 
         setEmailError({
@@ -210,15 +210,15 @@ const SettingsPage = () => {
         // alert(JSON.stringify(error.response.data))
 
         if(error.response.data.oldPassword === false) {
-          oldPasswordMsg = "Wrong old password"
+          oldPasswordMsg = "Incorrect email"
         }
 
         if(error.response.data.confirmedPassword === false) {
-          confirmedPasswordMsg = "Passwords are not the same"
+          confirmedPasswordMsg = "Confirmed password doesn't match new password"
         }
 
         if(error.response.data.newPassword === false) {
-          newPasswordMsg = "Passwords are the same"
+          newPasswordMsg = "New password is the same as old password"
         }
 
         if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "oldPassword")) {
@@ -256,14 +256,14 @@ const SettingsPage = () => {
 
       dispatch(getToken(null))
       navigate("/login")
-      alert('Account has been deleted')
+      alert('Your account has been deleted')
     
     } catch (error) {
 
       console.log('error', error.response.data)
       
       if(error.response.data.nameOrEmail !== true) {
-        nameOrEmailMsg = "Wrong name or Email"
+        nameOrEmailMsg = "Incorrect username or email"
       }
 
       if(error.response.data.verification === false) {
@@ -324,12 +324,12 @@ const SettingsPage = () => {
           <p>Delete account</p>
           <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
           <ValidationMsg>{deleteError. nameOrEmailError}</ValidationMsg>
-          <input placeholder="delete my account" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
+          <input placeholder="To verify, type &quot;delete my account&quot;" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
           <ValidationMsg>{deleteError.verificationError}</ValidationMsg>
           <button onClick={deleteAccount} style={{backgroundColor: '#E13247'}}>Delete</button> 
         </div>
         <Link to="/">
-          <CancelButton>Cancel</CancelButton>
+          <CancelButton>Bac</CancelButton>
         </Link>
       </Container>
     </Layout>

@@ -7,9 +7,9 @@ import { getToken } from "../actions/getToken"
 import styled from "styled-components"
 
 const ValidationMsg = styled.p`
-  margin-top: 0;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-top: 2px;
+  margin-bottom: 3px;
+  font-size: 12px;
   color: #E13247;
   height: 20px;
   font-weight: 400;
@@ -70,6 +70,8 @@ const Login = () => {
 
   const [isLogged, setIsLogged] = useState()
 
+  console.log(registerData)
+
   useEffect(() => {
 
     handleIsLogged()
@@ -96,9 +98,13 @@ const Login = () => {
     } catch (error) {
       alert(JSON.stringify(error))
     }
+
+    
   }
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
     try {
       await axios({
         method: 'post',
@@ -113,6 +119,16 @@ const Login = () => {
         email: '', 
         password: ''
       })
+
+      setRegisterData({
+        name: '', 
+        email: '', 
+        password: ''
+      })
+
+      document.getElementById("create-course-form").reset();
+  
+      console.log("registeerData", registerData)
     
     } catch (error) {
 
@@ -160,6 +176,11 @@ const handleLogin = async () => {
     dispatch(getToken(response.headers["auth-token"]))
     
     navigate("/")
+
+    setLoginData({
+      nameOrEmail: '', 
+      password: ''
+    })
   
   } catch (error) {
       let nameOrEmailMsg = '';
@@ -225,27 +246,27 @@ const handleMail = async () => {
   return (
     <Container>
       <h1>Login</h1>
-      <div>
-      <p>Create your account</p>
-      <div>
-        <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
-        <ValidationMsg>{registerErrors.name}</ValidationMsg>
-      </div>
-      <div>
-        <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
-        <ValidationMsg>{registerErrors.email}</ValidationMsg>
-      </div>
-      <div>
-        <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
-        <ValidationMsg>{registerErrors.password}</ValidationMsg>
-      </div>
-          <button onClick={handleRegister}>Create account</button> 
-      </div>
+      <form id="create-course-form">
+        <p>Create your account</p>
+        <div>
+          <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
+          <ValidationMsg>{registerErrors.name}</ValidationMsg>
+        </div>
+        <div>
+          <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
+          <ValidationMsg>{registerErrors.email}</ValidationMsg>
+        </div>
+        <div>
+          <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
+          <ValidationMsg>{registerErrors.password}</ValidationMsg>
+        </div>
+        <button onClick={handleRegister}>Create account</button> 
+      </form>
       <div>
         <p>Sign in to App</p>
           <input placeholder="Username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
           <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
-          <input placeholder="Password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
+          <input type="password" placeholder="Password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
           <ValidationMsg>{loginErrors.password}</ValidationMsg>
           <button onClick={handleLogin}>Sign in</button> 
       </div>

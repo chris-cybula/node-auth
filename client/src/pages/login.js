@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../actions/getToken"
@@ -25,6 +25,9 @@ const Container = styled.div`
 const Login = () => {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.authToken);
+  const registerForm = useRef(null);
+  const loginForm = useRef(null);
+  const emailForm = useRef(null);
 
   const [registerData, setRegisterData] = useState(
     { 
@@ -126,7 +129,7 @@ const Login = () => {
         password: ''
       })
 
-      document.getElementById("create-course-form").reset();
+      registerForm.current.reset();
   
       console.log("registeerData", registerData)
     
@@ -164,7 +167,8 @@ const Login = () => {
     }
 }
 
-const handleLogin = async () => {
+const handleLogin = async (e) => {
+  e.preventDefault();
 
   try {
     const response = await axios({
@@ -181,6 +185,8 @@ const handleLogin = async () => {
       nameOrEmail: '', 
       password: ''
     })
+
+    loginForm.current.reset();
   
   } catch (error) {
       let nameOrEmailMsg = '';
@@ -209,7 +215,9 @@ const handleLogin = async () => {
   }
 }
 
-const handleMail = async () => {
+const handleMail = async (e) => {
+  e.preventDefault();
+
   try {
     await axios({
       method: 'post',
@@ -222,6 +230,12 @@ const handleMail = async () => {
     })
 
     alert('Email with new password has been sent')
+
+    setResetEmail({
+      email: '', 
+    })
+
+    emailForm.current.reset();
   
   } catch (error) {
 
@@ -246,36 +260,36 @@ const handleMail = async () => {
   return (
     <Container>
       <h1>Login</h1>
-      <form id="create-course-form">
+      <form ref={registerForm}>
         <p>Create your account</p>
         <div>
           <input placeholder="Username" onChange={e => setRegisterData({...registerData, name: e.target.value})}/>
           <ValidationMsg>{registerErrors.name}</ValidationMsg>
         </div>
         <div>
-          <input placeholder="Email" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
+          <input placeholder="Email" autoComplete="one-time-code" onChange={e => setRegisterData({...registerData, email: e.target.value})}/>
           <ValidationMsg>{registerErrors.email}</ValidationMsg>
         </div>
         <div>
-          <input placeholder="Password" onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
+          <input placeholder="Password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setRegisterData({...registerData, password: e.target.value})}/>
           <ValidationMsg>{registerErrors.password}</ValidationMsg>
         </div>
         <button onClick={handleRegister}>Create account</button> 
       </form>
-      <div>
+      <form ref={loginForm}>
         <p>Sign in to App</p>
-          <input placeholder="Username or email" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
-          <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
-          <input type="password" placeholder="Password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
-          <ValidationMsg>{loginErrors.password}</ValidationMsg>
-          <button onClick={handleLogin}>Sign in</button> 
-      </div>
-      <div>
+        <input placeholder="Username or email" autoComplete="username" onChange={e => setLoginData({...loginData, nameOrEmail: e.target.value})}/>
+        <ValidationMsg>{loginErrors.nameOrEmail}</ValidationMsg>
+        <input  type="password" placeholder="Password" onChange={e => setLoginData({...loginData, password: e.target.value})}/>
+        <ValidationMsg>{loginErrors.password}</ValidationMsg>
+        <button onClick={handleLogin}>Sign in</button> 
+      </form>
+      <form ref={emailForm}>
         <p>Reset your password</p>
-          <input placeholder="Email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
-          <ValidationMsg>{resetEmailError.emailError}</ValidationMsg>
-          <button onClick={handleMail}>Send password reset email</button> 
-      </div>
+        <input placeholder="Email" onChange={e => setResetEmail({...resetEmail, email: e.target.value})}/>
+        <ValidationMsg>{resetEmailError.emailError}</ValidationMsg>
+        <button onClick={handleMail}>Send password reset email</button> 
+      </form>
     </Container>
   )
   } else {

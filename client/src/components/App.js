@@ -1,6 +1,6 @@
 import React from "react"
 import axios from "axios"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Layout from "../components/Layout.js"
@@ -75,6 +75,8 @@ const ValidationMsg = styled.p`
 const App = () => {
   const authToken = useSelector((state) => state.authToken);
   const dispatch = useDispatch();
+  const itemForm = useRef(null);
+
   
   const [listItems, setListItem] = useState([])
   // const [item, setItem] = useState()
@@ -108,7 +110,8 @@ const App = () => {
     }
   }
 
-  const addItem = async () => {
+  const addItem = async (e) => {
+      e.preventDefault();
 
       try {
         await axios({
@@ -121,6 +124,12 @@ const App = () => {
         setListItem([...listItems, item['item']])    
         
         setAppError("")
+
+        setItem({
+          item: '', 
+        })
+  
+        itemForm.current.reset();
       
       } catch (error) {
         
@@ -193,11 +202,11 @@ const App = () => {
           <h1 style={{textAlign: 'center'}}>App</h1>
 
           <InputWrapper>
-            <div>
+            <form ref={itemForm}>
               <input placeholder="Item" onChange={e => setItem({...item, item: e.target.value})} />
               <ValidationMsg>{appError}</ValidationMsg>
               <button onClick={addItem}>Add item</button>
-            </div>
+            </form>
           </InputWrapper>
 
           <div>

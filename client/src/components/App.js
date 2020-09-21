@@ -140,7 +140,7 @@ const App = () => {
         }
 
         if(error.response.data.itemExists) {
-          appErrorMsg = "Item already exists"
+          appErrorMsg = "Value already exists"
         }
 
         setAppError(appErrorMsg)
@@ -185,7 +185,6 @@ const App = () => {
 
     dispatch(getToken(null))
     navigate("/login")
-    alert('logout')
   }
 
   console.log('yoo!', userData)
@@ -203,9 +202,9 @@ const App = () => {
 
           <InputWrapper>
             <form ref={itemForm}>
-              <input placeholder="Item" onChange={e => setItem({...item, item: e.target.value})} />
+              <input placeholder="Value" onChange={e => setItem({...item, item: e.target.value})} />
               <ValidationMsg>{appError}</ValidationMsg>
-              <button onClick={addItem}>Add item</button>
+              <button onClick={addItem}>Add value</button>
             </form>
           </InputWrapper>
 

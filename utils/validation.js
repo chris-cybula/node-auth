@@ -245,7 +245,7 @@ const appValidation = (data) => {
       errors.forEach(err => {
         switch (err.code) {
           case "string.empty":
-            err.message = "Item can't be blank";
+            err.message = "Value can't be blank";
           break;
         }
       });

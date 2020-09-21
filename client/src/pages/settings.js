@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "../components/Layout.js"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import { useSelector, useDispatch } from "react-redux"
 import { getToken } from "../actions/getToken"
@@ -37,6 +37,10 @@ const SettingsPage = () => {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.authToken);
   const userDetails = useSelector((state) => state.userDetails);
+  const changeUsernameForm = useRef(null);
+  const changeEmailForm = useRef(null);
+  const changePasswordForm = useRef(null);
+  const deleteAccountForm = useRef(null);
 
   const [settingsData, setSettingsData] = useState(
     {   
@@ -87,7 +91,8 @@ const SettingsPage = () => {
     
   }, [])
 
-  const changeName = async () => {
+  const changeName = async (e) => {
+    e.preventDefault();
 
     let nameErrorMsg = '';
 
@@ -101,9 +106,15 @@ const SettingsPage = () => {
 
         setNameError("")
     
-        alert('Name changed')
+        alert('Your username has been changed')
 
         dispatch(getUserData({...userDetails['userData'], name: settingsData.newName}))
+
+        setSettingsData({
+          newName: '', 
+        })
+
+        changeUsernameForm.current.reset();
       
       } catch (error) {
 
@@ -120,7 +131,8 @@ const SettingsPage = () => {
       }
   }
 
-  const changeEmail = async () => {
+  const changeEmail = async (e) => {
+    e.preventDefault();
 
     let oldEmailMsg = null
     let newEmailMsg = null
@@ -134,7 +146,7 @@ const SettingsPage = () => {
           headers: { 'auth-token': authToken.token }
         })
     
-        alert('Email changed')
+        alert('Your email has been changed')
 
         dispatch(getUserData({...userDetails['userData'], email: settingsData.newEmail}))
 
@@ -143,6 +155,14 @@ const SettingsPage = () => {
           newEmailError: null,
           confirmedEmailError: null
         })
+
+        setSettingsData({
+          oldEmail: '',
+          newEmail: '',
+          confirmedEmail: ''
+        })
+
+        changeEmailForm.current.reset();
       
       } catch (error) {
         // alert(JSON.stringify(error.response.data))
@@ -181,7 +201,8 @@ const SettingsPage = () => {
       }
   }
 
-  const changePassword = async () => {
+  const changePassword = async (e) => {
+    e.preventDefault();
 
     let oldPasswordMsg = null
     let newPasswordMsg = null
@@ -196,7 +217,7 @@ const SettingsPage = () => {
             headers: { 'auth-token': authToken.token }
         })
     
-        alert('Pass changed')
+        alert('Your password has been changed')
 
         // updateData('password', settingsData.newPassword)
 
@@ -205,6 +226,14 @@ const SettingsPage = () => {
           newPasswordError: '',
           confirmedPasswordError: ''
         })
+
+        setSettingsData({
+          oldPassword: '',
+          newPassword: '',
+          confirmedPassword: ''
+        })
+
+        changePasswordForm.current.reset();
       
       } catch (error) {
         // alert(JSON.stringify(error.response.data))
@@ -267,7 +296,7 @@ const SettingsPage = () => {
       }
 
       if(error.response.data.verification === false) {
-        verificationMsg = "Wrong value"
+        verificationMsg = "Incorrect verification"
       }
       
       if(error.response.data.errors && error.response.data.errors.find(element => element.context.key === "nameOrEmail")) {
@@ -290,15 +319,15 @@ const SettingsPage = () => {
     <Layout title={"Settings"}>
       <Container>
         <h1>User settings</h1>
-        <div>
+        <form ref={changeUsernameForm}>
           <TextWrapper>    
             <p>Change username - <strong>{userDetails['userData'].name}</strong></p>
           </TextWrapper>
           <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
           <ValidationMsg>{nameError}</ValidationMsg>
           <button onClick={changeName}>Change username</button> 
-        </div>
-        <div>
+        </form>
+        <form ref={changeEmailForm}> 
           <TextWrapper>
             <p>Change email - <strong>{userDetails['userData'].email}</strong></p>
           </TextWrapper>
@@ -309,17 +338,17 @@ const SettingsPage = () => {
           <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
           <ValidationMsg>{emailError.confirmedEmailError}</ValidationMsg>
           <button onClick={changeEmail}>Change email</button> 
-        </div>
-        <div>
+        </form>
+        <form ref={changePasswordForm}> 
           <p>Change password</p>
-          <input placeholder="Old password" onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
+          <input placeholder="Old password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
           <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
-          <input placeholder="New password" onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
+          <input placeholder="New password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
           <ValidationMsg>{passwordError.newPasswordError}</ValidationMsg>
-          <input placeholder="Confirm new password" onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
+          <input placeholder="Confirm new password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
           <ValidationMsg>{passwordError.confirmedPasswordError}</ValidationMsg>
           <button onClick={changePassword}>Change password</button> 
-        </div>
+        </form>
         <div>
           <p>Delete account</p>
           <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
@@ -329,7 +358,7 @@ const SettingsPage = () => {
           <button onClick={deleteAccount} style={{backgroundColor: '#E13247'}}>Delete</button> 
         </div>
         <Link to="/">
-          <CancelButton>Bac</CancelButton>
+          <CancelButton>Back</CancelButton>
         </Link>
       </Container>
     </Layout>

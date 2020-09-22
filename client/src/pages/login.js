@@ -259,7 +259,7 @@ const handleMail = async (e) => {
 
   return (
     <Container>
-      <h1>Login</h1>
+      <h1 style={{paddingTop: '29px'}}>Login</h1>
       <form ref={registerForm}>
         <p>Create your account</p>
         <div>

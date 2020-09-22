@@ -198,7 +198,7 @@ const App = () => {
             <LogoutButton onClick={logout} style={{marginLeft: '10px'}}>Sign out</LogoutButton>
           </NavWrapper>
           
-          <h1 style={{textAlign: 'center'}}>App</h1>
+          <h1 style={{textAlign: 'center', paddingBottom: '16px'}}>App</h1>
 
           <InputWrapper>
             <form ref={itemForm}>

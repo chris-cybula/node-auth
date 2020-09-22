@@ -318,7 +318,7 @@ const SettingsPage = () => {
   return (
     <Layout title={"Settings"}>
       <Container>
-        <h1>User settings</h1>
+        <h1 style={{paddingTop: '29px'}}>Settings</h1>
         <form ref={changeUsernameForm}>
           <TextWrapper>    
             <p>Change username - <strong>{userDetails['userData'].name}</strong></p>

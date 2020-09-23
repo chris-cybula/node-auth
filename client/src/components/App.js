@@ -92,6 +92,8 @@ const App = () => {
 
   useEffect(() => {
     getData()
+    
+
   }, [authToken])
 
   const getData = async () => {

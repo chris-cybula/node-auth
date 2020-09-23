@@ -86,9 +86,8 @@ const SettingsPage = () => {
     }
   )
 
-  useEffect(() => {
-    
-    
+  useEffect(() => { 
+    console.log(window.location.host)
   }, [])
 
   const changeName = async (e) => {

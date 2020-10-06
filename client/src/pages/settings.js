@@ -87,7 +87,7 @@ const SettingsPage = () => {
   )
 
   useEffect(() => { 
-    console.log(window.location.host)
+   
   }, [])
 
   const changeName = async (e) => {
@@ -109,8 +109,8 @@ const SettingsPage = () => {
 
         dispatch(getUserData({...userDetails['userData'], name: settingsData.newName}))
 
-        setSettingsData({
-          newName: '', 
+        setSettingsData({...settingsData, 
+          newName: ''
         })
 
         changeUsernameForm.current.reset();
@@ -155,7 +155,7 @@ const SettingsPage = () => {
           confirmedEmailError: null
         })
 
-        setSettingsData({
+        setSettingsData({...settingsData,
           oldEmail: '',
           newEmail: '',
           confirmedEmail: ''
@@ -226,7 +226,7 @@ const SettingsPage = () => {
           confirmedPasswordError: ''
         })
 
-        setSettingsData({
+        setSettingsData({...settingsData,
           oldPassword: '',
           newPassword: '',
           confirmedPassword: ''
@@ -323,6 +323,9 @@ const SettingsPage = () => {
             <p>Change username - <strong>{userDetails['userData'].name}</strong></p>
           </TextWrapper>
           <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
+          
+          
+          
           <ValidationMsg>{nameError}</ValidationMsg>
           <button onClick={changeName}>Change username</button> 
         </form>

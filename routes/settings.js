@@ -9,6 +9,8 @@ router.post('/name', verify, async (req, res) => {
     let name = null
     let errors = null
 
+    console.log('name', req.body)
+
     const { error } = changeNameValidation({name: req.body[1].newName});
     if (error) {
       errors = error.details
@@ -31,11 +33,18 @@ router.post('/name', verify, async (req, res) => {
 
 router.post('/email', verify, async (req, res) => {
 
+  console.log('email', req.body)
+
     const data = await User.find( { _id: req.user });
     let errors = null
     let oldEmail = null
     let newEmail = null
     let confirmedEmail = null
+
+    console.log('req.user', req.user)
+    console.log('req.body[1].oldEmail', req.body[1].oldEmail)
+
+
 
     const { error } = changeEmailValidation({
       oldEmail: req.body[1].oldEmail,
@@ -78,6 +87,7 @@ router.post('/email', verify, async (req, res) => {
 router.post('/password', verify, async (req, res) => {
 
     const data = await User.find( { _id: req.user });
+
     const validPass = await bcrypt.compare(req.body[1].oldPassword, data[0].password)
     let errors = null
     let oldPassword = null

@@ -92,7 +92,7 @@ const App = () => {
 
   useEffect(() => {
     getData()
-    
+
 
   }, [authToken])
 
@@ -186,6 +186,7 @@ const App = () => {
     }
 
     dispatch(getToken(null))
+    localStorage.removeItem('state');
     navigate("/login")
   }
 

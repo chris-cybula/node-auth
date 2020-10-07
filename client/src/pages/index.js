@@ -8,6 +8,7 @@ import { getToken } from "../actions/getToken"
 
   const Index = () => {
     const dispatch = useDispatch();
+    const authToken = useSelector((state) => state.authToken);
     
     useEffect(() => {
 
@@ -31,13 +32,15 @@ import { getToken } from "../actions/getToken"
           console.log(response.headers["auth-token"])
 
           // alert('Cookie')
-        } else {
-          navigate("/login")
-        }
+        } 
       
       } catch (error) {
         alert(JSON.stringify(error))
       }
+    }
+
+    if(!authToken) {
+      navigate("/login")
     }
   
     return (

@@ -87,8 +87,13 @@ const SettingsPage = () => {
   )
 
   useEffect(() => { 
-   
+    
   }, [])
+
+  if(!authToken) {
+    navigate("/login")
+    return
+  }
 
   const changeName = async (e) => {
     e.preventDefault();

@@ -186,7 +186,7 @@ const App = () => {
     }
 
     dispatch(getToken(null))
-    localStorage.removeItem('state');
+    sessionStorage.removeItem('state');
     navigate("/login")
   }
 

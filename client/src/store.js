@@ -1,18 +1,18 @@
 import { createStore } from "redux"
 import allReducers from './reducers'
 
-const saveToLocalStorage = (state) =>  {
+const saveToSessionStorage = (state) =>  {
   try {
     const savedState = JSON.stringify(state)
-    localStorage.setItem('state', savedState)
+    sessionStorage.setItem('state', savedState)
   } catch(e) {
     console.log(e)
   }
 }
 
-const loadFromLocalStorage = () => {
+const loadFromSessionStorage = () => {
   try {
-    const savedState = localStorage.getItem('state')
+    const savedState = sessionStorage.getItem('state')
     if (savedState === null) return undefined
     return JSON.parse(savedState)
   } catch(e) {
@@ -21,7 +21,7 @@ const loadFromLocalStorage = () => {
   }
 }
 
-const persistState = loadFromLocalStorage()
+const persistState = loadFromSessionStorage()
 
 export let store = createStore(
   allReducers,
@@ -29,4 +29,4 @@ export let store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
-store.subscribe(() => saveToLocalStorage(store.getState()))
+store.subscribe(() => saveToSessionStorage(store.getState()))

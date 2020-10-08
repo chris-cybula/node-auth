@@ -87,13 +87,10 @@ const SettingsPage = () => {
   )
 
   useEffect(() => { 
-    
+    if(!authToken) {
+      navigate("/login")
+    }
   }, [])
-
-  if(!authToken) {
-    navigate("/login")
-    return
-  }
 
   const changeName = async (e) => {
     e.preventDefault();
@@ -319,56 +316,66 @@ const SettingsPage = () => {
 
   }
 
+  const renderSettings = () => {
+    if(authToken !== null) {
+      return (
+        <Layout title={"Settings"}>
+          <Container>
+            <h1 style={{paddingTop: '29px'}}>Settings</h1>
+            <form ref={changeUsernameForm}>
+              <TextWrapper>    
+                {/* <p>Change username - <strong>{userDetails['userData'].name}</strong></p> */}
+              </TextWrapper>
+              <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
+              
+              
+              
+              <ValidationMsg>{nameError}</ValidationMsg>
+              <button onClick={changeName}>Change username</button> 
+            </form>
+            <form ref={changeEmailForm}> 
+              <TextWrapper>
+                {/* <p>Change email - <strong>{userDetails['userData'].email}</strong></p> */}
+              </TextWrapper>
+              <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
+              <ValidationMsg>{emailError.oldEmailError}</ValidationMsg>
+              <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
+              <ValidationMsg>{emailError.newEmailError}</ValidationMsg>
+              <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
+              <ValidationMsg>{emailError.confirmedEmailError}</ValidationMsg>
+              <button onClick={changeEmail}>Change email</button> 
+            </form>
+            <form ref={changePasswordForm}> 
+              <p>Change password</p>
+              <input placeholder="Old password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
+              <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
+              <input placeholder="New password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
+              <ValidationMsg>{passwordError.newPasswordError}</ValidationMsg>
+              <input placeholder="Confirm new password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
+              <ValidationMsg>{passwordError.confirmedPasswordError}</ValidationMsg>
+              <button onClick={changePassword}>Change password</button> 
+            </form>
+            <div>
+              <p>Delete account</p>
+              <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
+              <ValidationMsg>{deleteError. nameOrEmailError}</ValidationMsg>
+              <input placeholder="To verify, type &quot;delete my account&quot;" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
+              <ValidationMsg>{deleteError.verificationError}</ValidationMsg>
+              <button onClick={deleteAccount} style={{backgroundColor: '#E13247'}}>Delete</button> 
+            </div>
+            <Link to="/">
+              <CancelButton>Back</CancelButton>
+            </Link>
+          </Container>
+        </Layout>
+      )
+    }
+  }
+
   return (
-    <Layout title={"Settings"}>
-      <Container>
-        <h1 style={{paddingTop: '29px'}}>Settings</h1>
-        <form ref={changeUsernameForm}>
-          <TextWrapper>    
-            <p>Change username - <strong>{userDetails['userData'].name}</strong></p>
-          </TextWrapper>
-          <input placeholder="New username" onChange={e => setSettingsData({...settingsData, newName: e.target.value})}/>
-          
-          
-          
-          <ValidationMsg>{nameError}</ValidationMsg>
-          <button onClick={changeName}>Change username</button> 
-        </form>
-        <form ref={changeEmailForm}> 
-          <TextWrapper>
-            <p>Change email - <strong>{userDetails['userData'].email}</strong></p>
-          </TextWrapper>
-          <input placeholder="Old email" onChange={e => setSettingsData({...settingsData, oldEmail: e.target.value})}/>
-          <ValidationMsg>{emailError.oldEmailError}</ValidationMsg>
-          <input placeholder="New email" onChange={e => setSettingsData({...settingsData, newEmail: e.target.value})}/>
-          <ValidationMsg>{emailError.newEmailError}</ValidationMsg>
-          <input placeholder="Confirm new email" onChange={e => setSettingsData({...settingsData, confirmedEmail: e.target.value})}/>
-          <ValidationMsg>{emailError.confirmedEmailError}</ValidationMsg>
-          <button onClick={changeEmail}>Change email</button> 
-        </form>
-        <form ref={changePasswordForm}> 
-          <p>Change password</p>
-          <input placeholder="Old password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, oldPassword: e.target.value})}/>
-          <ValidationMsg>{passwordError.oldPasswordError}</ValidationMsg>
-          <input placeholder="New password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, newPassword: e.target.value})}/>
-          <ValidationMsg>{passwordError.newPasswordError}</ValidationMsg>
-          <input placeholder="Confirm new password" style={{WebkitTextSecurity: 'disc'}} onChange={e => setSettingsData({...settingsData, confirmedPassword: e.target.value})}/>
-          <ValidationMsg>{passwordError.confirmedPasswordError}</ValidationMsg>
-          <button onClick={changePassword}>Change password</button> 
-        </form>
-        <div>
-          <p>Delete account</p>
-          <input placeholder="Your username or email" onChange={e => setDeleteData({...deleteData, nameOrEmail: e.target.value})}/>
-          <ValidationMsg>{deleteError. nameOrEmailError}</ValidationMsg>
-          <input placeholder="To verify, type &quot;delete my account&quot;" onChange={e => setDeleteData({...deleteData, verification: e.target.value})}/>
-          <ValidationMsg>{deleteError.verificationError}</ValidationMsg>
-          <button onClick={deleteAccount} style={{backgroundColor: '#E13247'}}>Delete</button> 
-        </div>
-        <Link to="/">
-          <CancelButton>Back</CancelButton>
-        </Link>
-      </Container>
-    </Layout>
+    <>
+      {renderSettings()}
+    </>
   )
 }
 

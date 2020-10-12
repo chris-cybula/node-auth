@@ -6,7 +6,7 @@ const saveToSessionStorage = (state) =>  {
     const savedState = JSON.stringify(state)
     sessionStorage.setItem('state', savedState)
   } catch(e) {
-    console.log(e)
+    alert(JSON.stringify("Sorry, something went wrong."))
   }
 }
 
@@ -16,7 +16,7 @@ const loadFromSessionStorage = () => {
     if (savedState === null) return undefined
     return JSON.parse(savedState)
   } catch(e) {
-    console.log(e)
+    alert(JSON.stringify("Sorry, something went wrong."))
     return undefined
   }
 }

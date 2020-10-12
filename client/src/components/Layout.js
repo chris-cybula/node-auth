@@ -24,7 +24,7 @@ const Main = styled.div`
   width: 100%;
 `
 
-const Layout = ({ link, location, title, children }) => {
+const Layout = ({ title, children }) => {
   const { site } = useStaticQuery(
     graphql`
       query {

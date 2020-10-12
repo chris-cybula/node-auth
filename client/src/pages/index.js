@@ -1,56 +1,45 @@
 import React from "react"
 import App from "../components/App.js"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import axios from "axios"
-import { Link, navigate } from "gatsby"
-import { useDispatch, useSelector } from "react-redux";
+import { navigate } from "gatsby"
+import { useDispatch, useSelector } from "react-redux"
 import { getToken } from "../actions/getToken"
 
-  const Index = () => {
-    const dispatch = useDispatch();
-    const authToken = useSelector((state) => state.authToken);
-    
-    useEffect(() => {
+const Index = () => {
+  const dispatch = useDispatch()
+  const authToken = useSelector(state => state.authToken)
 
-      handleLogin()
+  useEffect(() => {
+    handleLogin()
+  }, [])
 
-    }, [])
-  
-    const handleLogin = async () => {
+  const handleLogin = async () => {
+    try {
+      axios.defaults.withCredentials = true
 
-      try {
-        axios.defaults.withCredentials = true;
-        
-        const response = await axios({
-          method: 'post',
-          url: 'http://localhost:3000/api/user/cookie',
-        })
-        
-        if(response.headers["auth-token"]) {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:3000/api/user/cookie",
+      })
 
-          dispatch(getToken(response.headers["auth-token"]))
-          console.log(response.headers["auth-token"])
-
-          // alert('Cookie')
-        } 
-      
-      } catch (error) {
-        alert(JSON.stringify(error))
+      if (response.headers["auth-token"]) {
+        dispatch(getToken(response.headers["auth-token"]))
       }
+    } catch (error) {
+      alert(JSON.stringify("Sorry, something went wrong."))
     }
-
-    if(!authToken) {
-      navigate("/login")
-    }
-  
-    return (
-      <>
-        <App />
-      </>
-    )
   }
 
-  
+  if (!authToken) {
+    navigate("/login")
+  }
+
+  return (
+    <>
+      <App />
+    </>
+  )
+}
 
 export default Index
-

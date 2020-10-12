@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Layout from "../components/Layout.js"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { Link } from "gatsby"
 import { getUserData } from "../actions/getUserData"
 import { getToken } from "../actions/getToken"
 import styled from "styled-components"
@@ -67,145 +67,126 @@ const ValidationMsg = styled.p`
   margin-top: 2px;
   margin-bottom: 3px;
   font-size: 12px;
-  color: #E13247;
+  color: #e13247;
   height: 20px;
   font-weight: 400;
 `
 
 const App = () => {
-  const authToken = useSelector((state) => state.authToken);
-  const dispatch = useDispatch();
-  const itemForm = useRef(null);
+  const authToken = useSelector(state => state.authToken)
+  const dispatch = useDispatch()
+  const itemForm = useRef(null)
 
-  
   const [listItems, setListItem] = useState([])
-  // const [item, setItem] = useState()
 
-  const [item, setItem] = useState(
-    { 
-      item: "",
-    }
-  )
+  const [item, setItem] = useState({
+    item: "",
+  })
 
-  const [userData, setUserData] = useState([])
   const [appError, setAppError] = useState()
 
   useEffect(() => {
     getData()
-
-
   }, [authToken])
 
   const getData = async () => {
-
-    if(authToken) {
+    if (authToken) {
       const userData = await axios.get("http://localhost:3000", {
         headers: {
-          'auth-token': authToken.token
-        }
-      });
+          "auth-token": authToken.token,
+        },
+      })
 
       setListItem(userData.data[0].data)
-      setUserData(userData.data[0])
-
       dispatch(getUserData(userData.data[0]))
     }
   }
 
-  const addItem = async (e) => {
-      e.preventDefault();
+  const addItem = async e => {
+    e.preventDefault()
 
-      try {
-        await axios({
-          method: 'post',
-          url: 'http://localhost:3000',
-          data: item,
-          headers: { 'auth-token': authToken.token }
-        })
+    try {
+      await axios({
+        method: "post",
+        url: "http://localhost:3000",
+        data: item,
+        headers: { "auth-token": authToken.token },
+      })
 
-        setListItem([...listItems, item['item']])    
-        
-        setAppError("")
+      setListItem([...listItems, item["item"]])
 
-        setItem({
-          item: '', 
-        })
-  
-        itemForm.current.reset();
+      setAppError("")
+
+      setItem({
+        item: "",
+      })
+
+      itemForm.current.reset()
       
-      } catch (error) {
-        
-        let appErrorMsg = ""
+    } catch (error) {
+      let appErrorMsg = ""
 
-        if(error.response.data.errors) {
-          appErrorMsg = error.response.data.errors[0].message
-        }
-
-        if(error.response.data.itemExists) {
-          appErrorMsg = "Value already exists"
-        }
-
-        setAppError(appErrorMsg)
+      if (error.response.data.errors) {
+        appErrorMsg = error.response.data.errors[0].message
       }
+
+      if (error.response.data.itemExists) {
+        appErrorMsg = "Value already exists"
+      }
+
+      setAppError(appErrorMsg)
+    }
   }
 
   const deleteItem = async e => {
-    
     const removedItem = e.target.parentElement.firstChild.firstChild.innerHTML
     console.log(removedItem)
-    
-    if(authToken) {
-    await axios.delete(`http://localhost:3000/${removedItem}`, {
+
+    if (authToken) {
+      await axios.delete(`http://localhost:3000/${removedItem}`, {
         headers: {
-          'auth-token': authToken.token
-        }
-      });
+          "auth-token": authToken.token,
+        },
+      })
 
       setListItem(listItems.filter(e => e !== removedItem))
     }
   }
 
-  const updateData = (updatedItem, item) => {
-    
-    setUserData({...userData, [updatedItem]: item})
-    
-  }
-
   const logout = async () => {
-
     try {
       await axios({
-        method: 'post',
-        url: 'http://localhost:3000/api/user/clear-cookie',
+        method: "post",
+        url: "http://localhost:3000/api/user/clear-cookie",
       })
-      
-     console.log('cookie removed')
-    
     } catch (error) {
-      alert(JSON.stringify(error))
+      alert(JSON.stringify("Sorry, something went wrong."))
     }
 
     dispatch(getToken(null))
-    sessionStorage.removeItem('state');
+    sessionStorage.removeItem("state")
     navigate("/login")
   }
 
-  console.log('yoo!', userData)
-
   const renderApp = () => {
-    if(authToken !== null) {
+    if (authToken !== null) {
       return (
         <Layout title={"App"}>
           <NavWrapper>
             <Link to="/settings">Settings</Link>
-            <LogoutButton onClick={logout} style={{marginLeft: '10px'}}>Sign out</LogoutButton>
+            <LogoutButton onClick={logout} style={{ marginLeft: "10px" }}>
+              Sign out
+            </LogoutButton>
           </NavWrapper>
-          
-          <h1 style={{textAlign: 'center', paddingBottom: '16px'}}>App</h1>
+
+          <h1 style={{ textAlign: "center", paddingBottom: "16px" }}>App</h1>
 
           <InputWrapper>
             <form ref={itemForm}>
-              <input placeholder="Value" onChange={e => setItem({...item, item: e.target.value})} />
+              <input
+                placeholder="Value"
+                onChange={e => setItem({ ...item, item: e.target.value })}
+              />
               <ValidationMsg>{appError}</ValidationMsg>
               <button onClick={addItem}>Add value</button>
             </form>
@@ -219,8 +200,13 @@ const App = () => {
                     <span>{item}</span>
                   </TextWrapper>
                   <DeleteButton onClick={deleteItem}>
-                    <DeleteIcon height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                    <DeleteIcon
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
                     </DeleteIcon>
                   </DeleteButton>
                 </ItemWrapper>
@@ -228,14 +214,11 @@ const App = () => {
             })}
           </div>
         </Layout>
-    )} 
+      )
+    }
   }
 
-  return (
-    <>
-      {renderApp()}
-    </>
-  )
+  return <>{renderApp()}</>
 }
 
 export default App

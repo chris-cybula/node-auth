@@ -27,7 +27,7 @@ app.use("/api/user", authRoute);
 app.use('/api/mail', mailRoute)
 app.use('/api/settings', settingsRoute)
 
-// connect to db
+
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

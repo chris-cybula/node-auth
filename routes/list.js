@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const verify = require("../utils/verifyToken");
 const { appValidation } = require("../utils/validation.js");
-
-const Item = require("../models/Item");
 const User = require("../models/User");
 
 router.get("/", verify, async (req, res) => {
@@ -11,7 +9,7 @@ router.get("/", verify, async (req, res) => {
     const data = await User.find({ _id: req.user });
     res.json(data);
   } catch (err) {
-    res.json('error');
+    res.json(err);
   }
 });
 

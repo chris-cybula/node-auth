@@ -20,8 +20,8 @@ const UserSchema = new mongoose.Schema({
     min: 6,
   },
   data: {
-    type : Array , 
-    "default" : []
+    type: Array,
+    default: [],
   },
   date: {
     type: Date,

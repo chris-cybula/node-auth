@@ -3,12 +3,9 @@ const router = express.Router();
 const verify = require('../utils/verifyToken')
 const { appValidation } = require("../utils/validation.js");
 
-
-//import schema
 const Item = require("../models/Item");
 const User = require("../models/User");
 
-//get data
 router.get("/", verify, async (req, res) => {
 
   try {

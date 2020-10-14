@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
-const log = console.log;
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 var generator = require("generate-password");
@@ -16,14 +15,11 @@ router.post("/", async (req, res) => {
     errors = error.details;
   }
 
-  console.log("email", req.body);
-
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     emailExist = false;
   }
 
-  // console.log(error)
   if (error || emailExist === false)
     return res.status(400).send({ errors: errors, emailExist: emailExist });
 
@@ -58,18 +54,16 @@ router.post("/", async (req, res) => {
   let mailOptions = {
     from: process.env.MAIL,
     to: req.body.email,
-    subject: "Nodemailer - Test",
+    subject: "App new password",
     text: newPassword,
   };
 
   transporter.sendMail(mailOptions, (err, data) => {
     if (err) {
-      return log("Error occurs!", err);
+      res.send(err);
     }
-    return log("Email sent!");
+    res.send("ok");
   });
-
-  res.send("ok");
 });
 
 module.exports = router;

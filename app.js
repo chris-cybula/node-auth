@@ -7,26 +7,22 @@ require("dotenv/config");
 
 const app = express();
 
-//routes
 const authRoute = require("./routes/auth");
 const listRoute = require("./routes/list");
 const mailRoute = require('./routes/mail')
 const settingsRoute = require('./routes/settings')
 
-//middlewares
 app.use(cors({
   origin: true,
   credentials: true,
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public'));
 
 app.use("/", listRoute);
 app.use("/api/user", authRoute);
 app.use('/api/mail', mailRoute)
 app.use('/api/settings', settingsRoute)
-
 
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,

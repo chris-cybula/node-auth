@@ -19,15 +19,5 @@
   "devDependencies": {},
   "scripts": {
     "start": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chris-cybula/webpack-react-configuration.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chris-cybula/webpack-react-configuration/issues"
-  },
-  "homepage": "https://github.com/chris-cybula/webpack-react-configuration#readme"
+  }
 }

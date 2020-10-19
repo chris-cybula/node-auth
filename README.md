@@ -72,7 +72,16 @@ npm run start
 ```
 
 ## Preview
+
+## Login page
+
 ![App-Auth](https://user-images.githubusercontent.com/28848115/96506358-63bd5180-124f-11eb-9088-21c2c2839c2a.png)
+
+## App
+
 ![App](https://user-images.githubusercontent.com/28848115/96506368-66b84200-124f-11eb-9d5c-91809cfc1a83.png)
+
+## Settings page
+
 ![App-Settings](https://user-images.githubusercontent.com/28848115/96506373-68820580-124f-11eb-9177-61eab038125c.png)
 

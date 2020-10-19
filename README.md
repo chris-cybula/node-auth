@@ -8,36 +8,36 @@ Created as a starter for a project. It allows you to create an account, sign in 
 
 ### Client
 
--React
--Redux
--Gatsby
--Styled Components
+- React
+- Redux
+- Gatsby
+- Styled Components
 
 ### Server
 
--Node
--Express
--JWT
--Joi
--Bcrypt
--Nodemailer
+- Node
+- Express
+- JWT
+- Joi
+- Bcrypt
+- Nodemailer
 
 ### Database
 
--MongoDB
--Mongoose	
+- MongoDB
+- Mongoose	
 
 ## Features
 
--validation
--user authentication
--password hashing
--user authorization
--generating and verifying JWT
--storing JWT in HttpOnly cookies
--sending email with generated password
--updating user details
--deleting an account from db
+- validation
+- user authentication
+- password hashing
+- user authorization
+- generating and verifying JWT
+- storing JWT in HttpOnly cookies
+- sending email with generated password
+- updating user details
+- deleting an account from db
 
 ## Setup
 

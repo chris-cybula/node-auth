@@ -1,4 +1,4 @@
-# Node.js authentication
+# Node.js Authentication
 
 ## Overview
 

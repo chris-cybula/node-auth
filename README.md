@@ -2,7 +2,7 @@
 
 ## Overview
 
-Node.js authentication created as a starter for a project. It allows you to create an account, sign in to an example app, reset forgotten password, change your name, email and password as well as delete an account.
+Node.js authentication created as a starter for a new project. It allows you to create an account, sign in to an example app, reset forgotten password, change your name, email and password as well as delete an account.
 
 ## Tools
 
